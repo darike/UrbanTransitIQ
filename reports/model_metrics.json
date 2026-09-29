@@ -1,0 +1,187 @@
+{
+  "delay_severity_classifier": {
+    "task": "delay severity (5 classes)",
+    "algorithms_compared": {
+      "RandomForest": {
+        "val_accuracy": 0.8567,
+        "test_accuracy": 0.8558,
+        "test_macro_f1": 0.7057,
+        "confusion_matrix": [
+          [
+            29975,
+            3840,
+            472,
+            255,
+            12
+          ],
+          [
+            1426,
+            24240,
+            1699,
+            1,
+            0
+          ],
+          [
+            126,
+            889,
+            6863,
+            1529,
+            0
+          ],
+          [
+            0,
+            43,
+            436,
+            3549,
+            127
+          ],
+          [
+            0,
+            0,
+            0,
+            38,
+            36
+          ]
+        ]
+      },
+      "XGBoost": {
+        "val_accuracy": 0.8674,
+        "test_accuracy": 0.8668,
+        "test_macro_f1": 0.704,
+        "confusion_matrix": [
+          [
+            30353,
+            3534,
+            470,
+            196,
+            1
+          ],
+          [
+            1699,
+            24759,
+            907,
+            1,
+            0
+          ],
+          [
+            128,
+            1402,
+            7136,
+            741,
+            0
+          ],
+          [
+            0,
+            52,
+            860,
+            3234,
+            9
+          ],
+          [
+            0,
+            0,
+            0,
+            64,
+            10
+          ]
+        ]
+      },
+      "LogisticRegression": {
+        "val_accuracy": 0.7895
+      }
+    },
+    "labels": [
+      "on_time",
+      "minor",
+      "moderate",
+      "major",
+      "severe"
+    ],
+    "features": [
+      "dep_hour",
+      "day_of_week",
+      "is_weekend",
+      "is_peak",
+      "distance_km",
+      "n_stops",
+      "scheduled_headway_min",
+      "vehicle_capacity",
+      "route_delay_7d",
+      "route_occ_7d",
+      "route_demand_7d"
+    ],
+    "xgb_feature_importance": {
+      "dep_hour": 0.0436,
+      "day_of_week": 0.0684,
+      "is_weekend": 0.3846,
+      "is_peak": 0.3649,
+      "distance_km": 0.0131,
+      "n_stops": 0.0096,
+      "scheduled_headway_min": 0.0093,
+      "vehicle_capacity": 0.0035,
+      "route_delay_7d": 0.0823,
+      "route_occ_7d": 0.0151,
+      "route_demand_7d": 0.0056
+    },
+    "split": "chronological 70/15/15",
+    "srs_targets": {
+      "accuracy>=0.85": true,
+      "macro_f1>=0.80": false
+    }
+  },
+  "dual_pipeline_comparison": {
+    "pipeline_a": "RandomForest (independent preprocessing; MLlib mirror \u2014 spark_jobs/04 runs the Spark-native version where Java is available)",
+    "pipeline_b": "XGBoost (independent preprocessing)",
+    "cases": 120,
+    "agreement_pct": 99.2,
+    "disagreements": 1,
+    "adjacent_class_share_of_disagreements": 100.0
+  },
+  "demand_forecast": {
+    "selected_model": "linear_residual",
+    "candidates_val_MAE": {
+      "linear_residual": 1961.0,
+      "xgb_residual": 4422.3
+    },
+    "model": {
+      "MAE": 2190.3,
+      "RMSE": 3217.5,
+      "MAPE_pct": 3.59,
+      "R2": 0.9776
+    },
+    "naive_seasonal_baseline": {
+      "MAE": 3183.4,
+      "RMSE": 4728.1,
+      "MAPE_pct": 5.29,
+      "R2": 0.9515
+    },
+    "improvement_MAE_pct": 31.2,
+    "test_window_days": 28
+  },
+  "crowding_risk": {
+    "test_auc": 0.9344,
+    "features": [
+      "dep_hour",
+      "day_of_week",
+      "is_weekend",
+      "is_peak",
+      "distance_km",
+      "n_stops",
+      "scheduled_headway_min",
+      "vehicle_capacity",
+      "route_delay_7d",
+      "route_occ_7d",
+      "route_demand_7d"
+    ]
+  },
+  "route_clustering": {
+    "silhouette_by_k": {
+      "3": 0.332,
+      "4": 0.332,
+      "5": 0.346,
+      "6": 0.344
+    },
+    "selected_k": 5
+  },
+  "elapsed_sec": 206.6
+}

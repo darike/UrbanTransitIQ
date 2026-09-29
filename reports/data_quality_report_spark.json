@@ -1,0 +1,13 @@
+{
+  "Q1_missing_or_unknown_route_id": 4093,
+  "Q2_duplicate_ticket_scans": 8181,
+  "Q3_duplicate_trips": 510,
+  "Q4_invalid_timestamps": 606,
+  "Q5_departure_after_arrival": 510,
+  "Q6_negative_passenger_counts": 201,
+  "Q7_unknown_vehicle_ids": 102,
+  "Q8_capacity_violations_kept": 80724,
+  "rows_trips_clean": 509898,
+  "rows_tickets_clean": 2053606,
+  "elapsed_sec": 188.7
+}

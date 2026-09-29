@@ -1,0 +1,56 @@
+=== UrbanTransit IQ — HDFS evidence (Mon Sep 28 20:07:58 PDT 2026) ===
+
+$ jps
+17252 DataNode
+33175 Jps
+17195 NameNode
+
+$ hdfs dfs -ls -h /urbantransit/raw_data
+Found 12 items
+-rw-r--r--   1 hamza supergroup     38.1 M 2026-09-28 20:07 /urbantransit/raw_data/delays.json
+-rw-r--r--   1 hamza supergroup      2.6 M 2026-09-28 20:07 /urbantransit/raw_data/gps_events.csv
+-rw-r--r--   1 hamza supergroup     17.4 M 2026-09-28 20:07 /urbantransit/raw_data/passenger_counts.csv
+-rw-r--r--   1 hamza supergroup      2.4 M 2026-09-28 20:07 /urbantransit/raw_data/passengers.csv
+-rw-r--r--   1 hamza supergroup     28.7 K 2026-09-28 20:06 /urbantransit/raw_data/route_stops.csv
+-rw-r--r--   1 hamza supergroup      8.8 K 2026-09-28 20:06 /urbantransit/raw_data/routes.csv
+-rw-r--r--   1 hamza supergroup      2.1 K 2026-09-28 20:07 /urbantransit/raw_data/schedules.csv
+-rw-r--r--   1 hamza supergroup      9.6 K 2026-09-28 20:07 /urbantransit/raw_data/service_calendar.csv
+-rw-r--r--   1 hamza supergroup     22.9 K 2026-09-28 20:06 /urbantransit/raw_data/stops.csv
+-rw-r--r--   1 hamza supergroup    128.7 M 2026-09-28 20:07 /urbantransit/raw_data/tickets.csv
+-rw-r--r--   1 hamza supergroup     67.5 M 2026-09-28 20:07 /urbantransit/raw_data/trips.csv
+-rw-r--r--   1 hamza supergroup     11.0 K 2026-09-28 20:06 /urbantransit/raw_data/vehicles.csv
+
+$ hdfs dfs -du -h -s /urbantransit
+344.6 M  344.6 M  /urbantransit
+
+$ hdfs dfsadmin -report
+Configured Capacity: 1081101176832 (1006.85 GB)
+Present Capacity: 1017594380193 (947.71 GB)
+DFS Remaining: 1017229729792 (947.37 GB)
+DFS Used: 364650401 (347.76 MB)
+DFS Used%: 0.04%
+Replicated Blocks:
+	Under replicated blocks: 0
+	Blocks with corrupt replicas: 0
+	Missing blocks: 0
+	Missing blocks (with replication factor 1): 0
+	Low redundancy blocks with highest priority to recover: 0
+	Pending deletion blocks: 0
+Erasure Coded Block Groups: 
+	Low redundancy block groups: 0
+	Block groups with corrupt internal blocks: 0
+	Missing block groups: 0
+	Low redundancy blocks with highest priority to recover: 0
+	Pending deletion blocks: 0
+
+-------------------------------------------------
+Live datanodes (1):
+
+Name: 127.0.0.1:9866 (localhost)
+Hostname: 172.21.42.149
+Decommission Status : Normal
+Configured Capacity: 1081101176832 (1006.85 GB)
+DFS Used: 364650401 (347.76 MB)
+Non DFS Used: 8514441311 (7.93 GB)
+DFS Remaining: 1017229729792 (947.37 GB)
+DFS Used%: 0.03%

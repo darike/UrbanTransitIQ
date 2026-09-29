@@ -1,0 +1,23 @@
+// UrbanTransit IQ — Power BI DAX measures
+// In Power BI Desktop: select the fact_trips table → Modeling → New measure →
+// paste each block. (Names match the build guide.)
+
+Total Passengers = SUM ( fact_trips[boarded] )
+
+Total Trips = COUNTROWS ( fact_trips )
+
+Avg Occupancy % = AVERAGE ( fact_trips[occupancy_pct] )
+
+Avg Delay (min) = AVERAGE ( fact_trips[delay_min] )
+
+On-Time % =
+DIVIDE (
+    CALCULATE ( COUNTROWS ( fact_trips ), fact_trips[delay_min] <= 5 ),
+    COUNTROWS ( fact_trips )
+) * 100
+
+Overcrowded Trips =
+CALCULATE ( COUNTROWS ( fact_trips ), fact_trips[occupancy_pct] > 100 )
+
+Peak Passengers =
+CALCULATE ( SUM ( fact_trips[boarded] ), fact_trips[is_peak] = TRUE () )

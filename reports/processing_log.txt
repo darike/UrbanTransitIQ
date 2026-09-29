@@ -1,0 +1,8 @@
+[    0.0s] loading raw tables
+[   14.7s] loaded: trips=510,510 tickets=2,061,787 counts=504,307
+[   14.7s] running data-quality checks
+[   18.5s] cleaning with audit trail
+[   19.6s] quality report written: 94927 issues across 8 checks
+[   20.7s] integrating 9 tables + engineering features
+[   27.9s] trips_enriched: 503,703 rows × 37 cols → parquet (partitioned by month)
+[   27.9s] building dashboard aggregates

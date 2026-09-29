@@ -1,0 +1,172 @@
+{
+  "generated_from": [
+    "route_stats.parquet",
+    "stop_stats.parquet",
+    "high_risk_trips.parquet"
+  ],
+  "rule": "every recommendation must display supporting evidence (SRS Step 46)",
+  "recommendations": [
+    {
+      "id": "REC-01",
+      "priority": "Critical",
+      "category": "Frequency",
+      "action": "Increase R011 peak frequency (headway 8 \u2192 4 min) and assign higher-capacity vehicles",
+      "evidence": [
+        "Average occupancy: 107%",
+        "Overload events (occ>100%): 4313 in 12 months",
+        "Demand: 489,395 boardings",
+        "On-time: 77% \u2014 overloading also degrades punctuality",
+        "Overload repeats across weekdays in the same period+direction (persistent, not one-off)"
+      ],
+      "impact": "Est. peak occupancy \u2192 ~91%, waiting time \u221225\u201335%",
+      "entity": "R011"
+    },
+    {
+      "id": "REC-02",
+      "priority": "Critical",
+      "category": "Frequency",
+      "action": "Increase R012 peak frequency (headway 6 \u2192 4 min) and assign higher-capacity vehicles",
+      "evidence": [
+        "Average occupancy: 107%",
+        "Overload events (occ>100%): 3535 in 12 months",
+        "Demand: 402,737 boardings",
+        "On-time: 64% \u2014 overloading also degrades punctuality",
+        "Overload repeats across weekdays in the same period+direction (persistent, not one-off)"
+      ],
+      "impact": "Est. peak occupancy \u2192 ~91%, waiting time \u221225\u201335%",
+      "entity": "R012"
+    },
+    {
+      "id": "REC-03",
+      "priority": "Critical",
+      "category": "Frequency",
+      "action": "Increase R064 peak frequency (headway 8 \u2192 4 min) and assign higher-capacity vehicles",
+      "evidence": [
+        "Average occupancy: 108%",
+        "Overload events (occ>100%): 2425 in 12 months",
+        "Demand: 279,336 boardings",
+        "On-time: 67% \u2014 overloading also degrades punctuality",
+        "Overload repeats across weekdays in the same period+direction (persistent, not one-off)"
+      ],
+      "impact": "Est. peak occupancy \u2192 ~92%, waiting time \u221225\u201335%",
+      "entity": "R064"
+    },
+    {
+      "id": "REC-04",
+      "priority": "High",
+      "category": "Schedule",
+      "action": "Re-time R092 departures to decouple from the congestion window; review dwell at its hub stops",
+      "evidence": [
+        "Demand: 568,118 boardings (top 4%)",
+        "Reliability score: 64 (network median 92)",
+        "Average delay: 7.3 min \u00b7 P90: 15.0 min",
+        "On-time: 47%"
+      ],
+      "impact": "Est. avg delay 7.3 \u2192 4.4 min",
+      "entity": "R092"
+    },
+    {
+      "id": "REC-05",
+      "priority": "Medium",
+      "category": "Frequency",
+      "action": "Reduce R096 off-peak frequency; occupancy does not justify current service",
+      "evidence": [
+        "Average occupancy: 36%",
+        "Reliability: 94 \u00b7 on-time 96% (service quality is not the issue)",
+        "Trips operated: 1,312"
+      ],
+      "impact": "Est. operating cost \u221210\u201314% with occupancy still under 60%",
+      "entity": "R096"
+    },
+    {
+      "id": "REC-06",
+      "priority": "Medium",
+      "category": "Frequency",
+      "action": "Reduce R088 off-peak frequency; occupancy does not justify current service",
+      "evidence": [
+        "Average occupancy: 36%",
+        "Reliability: 97 \u00b7 on-time 100% (service quality is not the issue)",
+        "Trips operated: 2,802"
+      ],
+      "impact": "Est. operating cost \u221210\u201314% with occupancy still under 60%",
+      "entity": "R088"
+    },
+    {
+      "id": "REC-07",
+      "priority": "High",
+      "category": "Operations",
+      "action": "Investigate dwell process at Industrial Zone A; add boarding lane / marshalling at peak",
+      "evidence": [
+        "Boardings: 299,422 (top 4% of stops)",
+        "Routes served: 7 \u2014 delay here propagates network-wide",
+        "Average delay at stop: 4.8 min (75th percentile threshold exceeded)"
+      ],
+      "impact": "Est. \u22122\u20134 min knock-on delay across serving routes",
+      "entity": "Industrial Zone A"
+    },
+    {
+      "id": "REC-08",
+      "priority": "High",
+      "category": "Operations",
+      "action": "Investigate dwell process at Tech Park Gate; add boarding lane / marshalling at peak",
+      "evidence": [
+        "Boardings: 280,615 (top 4% of stops)",
+        "Routes served: 13 \u2014 delay here propagates network-wide",
+        "Average delay at stop: 3.6 min (75th percentile threshold exceeded)"
+      ],
+      "impact": "Est. \u22122\u20134 min knock-on delay across serving routes",
+      "entity": "Tech Park Gate"
+    },
+    {
+      "id": "REC-09",
+      "priority": "High",
+      "category": "Capacity",
+      "action": "Assign articulated vehicle to trip T0231476 (R051, 09:00 outbound)",
+      "evidence": [
+        "Crowding-risk model: P(occ>100%) = 0.98 (XGBoost, AUC on unseen data in reports/model_metrics.json)",
+        "Current vehicle capacity: 60 seats",
+        "Risk driven by 7-day route occupancy trend + peak-hour pattern"
+      ],
+      "impact": "Prevents a predicted overload before it happens",
+      "entity": "T0231476"
+    },
+    {
+      "id": "REC-10",
+      "priority": "High",
+      "category": "Capacity",
+      "action": "Assign articulated vehicle to trip T0231477 (R051, 07:00 inbound)",
+      "evidence": [
+        "Crowding-risk model: P(occ>100%) = 0.98 (XGBoost, AUC on unseen data in reports/model_metrics.json)",
+        "Current vehicle capacity: 60 seats",
+        "Risk driven by 7-day route occupancy trend + peak-hour pattern"
+      ],
+      "impact": "Prevents a predicted overload before it happens",
+      "entity": "T0231477"
+    },
+    {
+      "id": "REC-11",
+      "priority": "High",
+      "category": "Capacity",
+      "action": "Assign articulated vehicle to trip T0231479 (R051, 07:00 outbound)",
+      "evidence": [
+        "Crowding-risk model: P(occ>100%) = 0.98 (XGBoost, AUC on unseen data in reports/model_metrics.json)",
+        "Current vehicle capacity: 60 seats",
+        "Risk driven by 7-day route occupancy trend + peak-hour pattern"
+      ],
+      "impact": "Prevents a predicted overload before it happens",
+      "entity": "T0231479"
+    },
+    {
+      "id": "REC-12",
+      "priority": "Low",
+      "category": "Fleet",
+      "action": "Inspect vehicle V118 \u2014 consistently late versus identical trips by other vehicles",
+      "evidence": [
+        "V118 trips average +6.8 min against the same route/time run by other vehicles",
+        "Pattern persists across routes and drivers \u2192 mechanical or dispatch issue"
+      ],
+      "impact": "Removes a recurring single-vehicle delay source",
+      "entity": "V118"
+    }
+  ]
+}

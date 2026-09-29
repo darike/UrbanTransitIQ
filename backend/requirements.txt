@@ -1,0 +1,15 @@
+pandas
+numpy
+scikit-learn
+xgboost
+pyarrow
+fastapi
+uvicorn[standard]
+sqlalchemy
+passlib[bcrypt]
+python-jose[cryptography]
+python-multipart
+joblib
+pytest
+httpx
+pyspark==3.5.1   ; python_version < "3.13"   # Spark jobs (requires Java 11+)

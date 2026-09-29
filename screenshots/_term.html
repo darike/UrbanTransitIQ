@@ -1,0 +1,41 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+  body{margin:0;background:#1e1e2e;display:flex;align-items:center;justify-content:center;height:100vh}
+  .win{width:1200px;background:#11111b;border-radius:12px;overflow:hidden;
+       box-shadow:0 24px 80px rgba(0,0,0,.6);font-family:'Cascadia Mono',Consolas,monospace}
+  .bar{background:#181825;padding:10px 14px;display:flex;gap:8px;align-items:center}
+  .dot{width:12px;height:12px;border-radius:50%}
+  .t{color:#7f849c;font-size:12px;margin-left:10px}
+  pre{margin:0;padding:18px 22px;color:#cdd6f4;font-size:13.5px;line-height:1.55;white-space:pre-wrap}
+  .p{color:#a6e3a1}
+</style></head><body><div class="win">
+  <div class="bar"><span class="dot" style="background:#f38ba8"></span>
+  <span class="dot" style="background:#f9e2af"></span>
+  <span class="dot" style="background:#a6e3a1"></span>
+  <span class="t">hamza@DESKTOP — WSL2 Ubuntu · Hadoop 3.4.1 · single-node HDFS</span></div>
+  <pre><span class="p">$ hdfs dfs -ls -h /urbantransit/raw_data && hdfs dfsadmin -report</span>
+=== UrbanTransit IQ — HDFS evidence (Mon Sep 28 20:07:58 PDT 2026) ===
+
+$ jps
+17252 DataNode
+33175 Jps
+17195 NameNode
+
+$ hdfs dfs -ls -h /urbantransit/raw_data
+Found 12 items
+-rw-r--r--   1 hamza supergroup     38.1 M 2026-09-28 20:07 /urbantransit/raw_data/delays.json
+-rw-r--r--   1 hamza supergroup      2.6 M 2026-09-28 20:07 /urbantransit/raw_data/gps_events.csv
+-rw-r--r--   1 hamza supergroup     17.4 M 2026-09-28 20:07 /urbantransit/raw_data/passenger_counts.csv
+-rw-r--r--   1 hamza supergroup      2.4 M 2026-09-28 20:07 /urbantransit/raw_data/passengers.csv
+-rw-r--r--   1 hamza supergroup     28.7 K 2026-09-28 20:06 /urbantransit/raw_data/route_stops.csv
+-rw-r--r--   1 hamza supergroup      8.8 K 2026-09-28 20:06 /urbantransit/raw_data/routes.csv
+-rw-r--r--   1 hamza supergroup      2.1 K 2026-09-28 20:07 /urbantransit/raw_data/schedules.csv
+-rw-r--r--   1 hamza supergroup      9.6 K 2026-09-28 20:07 /urbantransit/raw_data/service_calendar.csv
+-rw-r--r--   1 hamza supergroup     22.9 K 2026-09-28 20:06 /urbantransit/raw_data/stops.csv
+-rw-r--r--   1 hamza supergroup    128.7 M 2026-09-28 20:07 /urbantransit/raw_data/tickets.csv
+-rw-r--r--   1 hamza supergroup     67.5 M 2026-09-28 20:07 /urbantransit/raw_data/trips.csv
+-rw-r--r--   1 hamza supergroup     11.0 K 2026-09-28 20:06 /urbantransit/raw_data/vehicles.csv
+
+$ hdfs dfs -du -h -s /urbantransit
+344.6 M  344.6 M  /urbantransit
+
+$ hdfs dfsadmin -report</pre></div></body></html>

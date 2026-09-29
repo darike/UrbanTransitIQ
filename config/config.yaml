@@ -1,0 +1,59 @@
+# UrbanTransit IQ — central configuration
+# Every pipeline stage reads paths and thresholds from here.
+
+paths:
+  raw_data: "raw_data/"
+  processed_data: "processed_data/"
+  parquet_data: "parquet_data/"
+  models: "models/"
+  reports: "reports/"
+  database: "database/urbantransit.db"
+
+hdfs:
+  base: "/urbantransit"
+  raw: "/urbantransit/raw_data"
+  processed: "/urbantransit/processed_data"
+  parquet: "/urbantransit/parquet_data"
+
+thresholds:
+  overcrowding_occupancy_pct: 100
+  critical_occupancy_pct: 120
+  high_occupancy_pct: 90
+  delay_minor_min: 5
+  delay_moderate_min: 10
+  delay_major_min: 20
+  delay_severe_min: 60
+  underutilized_occupancy_pct: 40
+  bunching_headway_ratio: 0.25
+
+dataset_minimums:          # SRS hard minimums — generator must meet or exceed
+  ticketing_records: 2000000
+  trip_level_records: 500000
+  routes: 100
+  stops: 500
+  vehicles: 250
+  passengers: 50000
+  months_history: 12
+  delay_records: 250000
+
+generator:
+  seed: 20260928
+  start_date: "2025-10-01"
+  end_date: "2026-09-28"
+  # planted data-quality issues (fractions of affected rows)
+  dq:
+    missing_route_id: 0.0020
+    duplicate_tickets: 0.0040
+    negative_passenger_counts: 0.0004
+    invalid_timestamps: 0.0012
+    departure_before_arrival: 0.0010
+    capacity_violations_keep: true   # genuine overcrowding — kept, not cleaned
+    unknown_vehicle_ids: 0.0002
+    cancelled_trip_rate: 0.012
+
+models:
+  test_accuracy_target: 0.85      # SRS non-functional requirement
+  macro_f1_target: 0.80
+  chronological_split: { train: 0.70, validation: 0.15, test: 0.15 }
+  classifier_sample_rows: 420000  # rows sampled from features for tabular training
+  comparison_cases: 120           # unseen cases for the dual-pipeline report

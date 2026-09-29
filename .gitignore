@@ -1,0 +1,25 @@
+# dependencies / build
+node_modules/
+dist/
+__pycache__/
+*.pyc
+venv/
+
+# large generated data — regenerate with data_generator/generate_dataset.py
+# (1000-row samples for every table are committed in sample_data/)
+raw_data/
+processed_data/
+parquet_data/
+
+# local app database (recreate with database/seed.py)
+database/urbantransit.db
+
+# secrets — real SMTP credentials never reach GitHub (example file is committed)
+config/email.env
+config/.jwt_secret
+tools/
+
+# runtime logs
+reports/app_errors.log
+
+# keep: models/, reports/*.json, sample_data/, documentation/, screenshots/

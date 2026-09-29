@@ -1,0 +1,18 @@
+{
+  "RandomForest": {
+    "val_accuracy": 0.8575792456171418,
+    "val_f1": 0.8574369887912767,
+    "test_accuracy": 0.860936469553748,
+    "test_f1": 0.8609454033172443
+  },
+  "LogisticRegression": {
+    "val_accuracy": 0.7619532495130158,
+    "val_f1": 0.7514558123256495
+  },
+  "GBT_OneVsRest": {
+    "val_accuracy": 0.8556313086594652,
+    "val_f1": 0.8557529683931783
+  },
+  "selected": "RandomForest",
+  "elapsed_sec": 419.2
+}

@@ -1,0 +1,101 @@
+﻿route_id,route_name,origin_area,destination_area,distance_km,n_stops,scheduled_headway_min,base_demand,archetype,status
+R001,North â€“ Central Line 1,North,Central,27.4,19,6,72,unreliable,active
+R002,Riverside â€“ Old City Line 2,Riverside,Old City,23.0,26,15,704,high_performing,active
+R003,Old City â€“ Hillside Line 3,Old City,Hillside,24.1,29,12,208,unreliable,active
+R004,Central â€“ Industrial Line 4,Central,Industrial,18.0,13,10,62,high_performing,active
+R005,Hillside â€“ Airport Line 5,Hillside,Airport,36.1,16,10,400,underutilized,active
+R006,Airport â€“ Suburb East Line 6,Airport,Suburb East,14.1,12,8,415,underutilized,active
+R007,Industrial â€“ Suburb East Line 7,Industrial,Suburb East,11.8,17,6,371,underutilized,active
+R008,Industrial â€“ Airport Line 8,Industrial,Airport,18.9,23,12,391,overcrowded,active
+R009,Suburb West Loop 9,Suburb West,Suburb West,14.5,32,12,351,high_performing,active
+R010,Suburb East â€“ Hillside Line 10,Suburb East,Hillside,9.1,14,8,350,high_performing,active
+R011,Industrial â€“ University Line 11,Industrial,University,25.5,17,8,794,overcrowded,active
+R012,Airport â€“ Riverside Line 12,Airport,Riverside,31.3,28,6,681,overcrowded,active
+R013,North â€“ Harbor Line 13,North,Harbor,24.4,27,10,508,high_performing,active
+R014,Central â€“ Harbor Line 14,Central,Harbor,30.5,27,15,244,overcrowded,active
+R015,Central â€“ Hillside Line 15,Central,Hillside,21.4,33,20,396,high_performing,active
+R016,Riverside â€“ Suburb West Line 16,Riverside,Suburb West,22.4,20,20,400,high_performing,active
+R017,Riverside â€“ Suburb West Line 17,Riverside,Suburb West,25.3,27,6,425,high_performing,active
+R018,North â€“ Hillside Line 18,North,Hillside,6.8,17,12,316,high_performing,active
+R019,University â€“ Riverside Line 19,University,Riverside,9.5,29,20,549,underutilized,active
+R020,Central â€“ Harbor Line 20,Central,Harbor,34.0,21,8,117,overcrowded,active
+R021,Harbor â€“ North Line 21,Harbor,North,21.4,29,8,130,low_performing,active
+R022,Hillside â€“ Airport Line 22,Hillside,Airport,31.5,10,20,1506,high_performing,active
+R023,Industrial â€“ North Line 23,Industrial,North,7.8,12,12,192,high_performing,active
+R024,Suburb East â€“ Harbor Line 24,Suburb East,Harbor,9.6,32,12,102,high_performing,active
+R025,Airport â€“ Suburb West Line 25,Airport,Suburb West,30.6,19,8,893,low_performing,active
+R026,Industrial â€“ Riverside Line 26,Industrial,Riverside,34.1,20,12,149,high_performing,active
+R027,Hillside â€“ Harbor Line 27,Hillside,Harbor,15.1,10,10,211,underutilized,active
+R028,Old City â€“ University Line 28,Old City,University,15.2,11,15,416,overcrowded,active
+R029,Harbor â€“ Suburb West Line 29,Harbor,Suburb West,7.5,29,20,1698,low_performing,active
+R030,Hillside â€“ Suburb West Line 30,Hillside,Suburb West,18.0,31,15,848,unreliable,active
+R031,Hillside â€“ Old City Line 31,Hillside,Old City,24.3,10,8,137,high_performing,active
+R032,Harbor â€“ Hillside Line 32,Harbor,Hillside,15.6,26,12,58,unreliable,active
+R033,North â€“ Harbor Line 33,North,Harbor,33.2,25,10,644,underutilized,active
+R034,Harbor â€“ Lakeview Line 34,Harbor,Lakeview,12.3,31,10,1438,underutilized,active
+R035,University â€“ Lakeview Line 35,University,Lakeview,24.9,22,20,376,underutilized,active
+R036,Suburb East â€“ North Line 36,Suburb East,North,32.8,13,10,174,low_performing,active
+R037,Airport â€“ Suburb West Line 37,Airport,Suburb West,34.1,11,15,266,underutilized,active
+R038,Suburb West â€“ Harbor Line 38,Suburb West,Harbor,19.8,28,10,1512,underutilized,active
+R039,Airport â€“ North Line 39,Airport,North,16.4,14,8,161,overcrowded,active
+R040,Old City â€“ Central Line 40,Old City,Central,7.3,14,8,96,overcrowded,active
+R041,Airport â€“ Central Line 41,Airport,Central,12.4,16,12,341,low_performing,active
+R042,Harbor â€“ Suburb West Line 42,Harbor,Suburb West,32.6,27,6,310,high_performing,active
+R043,Harbor â€“ Central Line 43,Harbor,Central,22.3,18,6,323,high_performing,active
+R044,North â€“ Suburb West Line 44,North,Suburb West,21.5,21,6,435,high_performing,active
+R045,Airport â€“ Suburb West Line 45,Airport,Suburb West,25.6,17,20,1675,high_performing,active
+R046,Suburb East â€“ Old City Line 46,Suburb East,Old City,12.3,24,12,370,unreliable,active
+R047,Airport Loop 47,Airport,Airport,24.6,20,20,1366,underutilized,active
+R048,Lakeview â€“ Riverside Line 48,Lakeview,Riverside,31.7,14,8,734,low_performing,active
+R049,North â€“ Lakeview Line 49,North,Lakeview,7.9,22,6,346,high_performing,active
+R050,Suburb East â€“ Hillside Line 50,Suburb East,Hillside,36.9,16,10,211,unreliable,active
+R051,Harbor â€“ Airport Line 51,Harbor,Airport,14.1,33,8,166,overcrowded,active
+R052,Central â€“ Suburb East Line 52,Central,Suburb East,10.9,25,10,705,high_performing,active
+R053,Central â€“ University Line 53,Central,University,18.5,19,15,571,high_performing,active
+R054,University â€“ North Line 54,University,North,23.7,30,12,2376,underutilized,active
+R055,University â€“ Central Line 55,University,Central,19.4,18,20,493,underutilized,active
+R056,Suburb East â€“ Lakeview Line 56,Suburb East,Lakeview,15.8,17,12,166,high_performing,active
+R057,Central â€“ Lakeview Line 57,Central,Lakeview,16.0,11,10,286,high_performing,active
+R058,North â€“ Riverside Line 58,North,Riverside,11.3,21,12,146,low_performing,active
+R059,Lakeview â€“ Hillside Line 59,Lakeview,Hillside,34.0,23,20,546,high_performing,active
+R060,Suburb East â€“ Industrial Line 60,Suburb East,Industrial,11.5,19,12,475,unreliable,active
+R061,Industrial â€“ Riverside Line 61,Industrial,Riverside,10.1,23,20,730,high_performing,active
+R062,Old City â€“ Harbor Line 62,Old City,Harbor,28.9,28,8,661,high_performing,active
+R063,Suburb East â€“ Lakeview Line 63,Suburb East,Lakeview,25.5,19,6,2012,low_performing,active
+R064,Riverside â€“ North Line 64,Riverside,North,34.9,32,8,462,overcrowded,active
+R065,Central â€“ Hillside Line 65,Central,Hillside,21.1,29,10,1672,high_performing,active
+R066,Lakeview â€“ Old City Line 66,Lakeview,Old City,34.7,17,12,498,underutilized,active
+R067,Central â€“ Harbor Line 67,Central,Harbor,32.9,30,15,599,unreliable,active
+R068,Industrial â€“ Old City Line 68,Industrial,Old City,15.7,27,15,580,underutilized,active
+R069,Harbor â€“ Industrial Line 69,Harbor,Industrial,15.9,13,20,872,unreliable,active
+R070,Old City â€“ University Line 70,Old City,University,25.1,26,10,595,high_performing,active
+R071,North â€“ Old City Line 71,North,Old City,14.1,23,10,366,high_performing,active
+R072,Airport Loop 72,Airport,Airport,26.1,12,6,212,low_performing,active
+R073,Old City â€“ Riverside Line 73,Old City,Riverside,37.2,24,12,553,high_performing,active
+R074,Hillside Loop 74,Hillside,Hillside,36.7,26,10,969,underutilized,active
+R075,Lakeview â€“ Hillside Line 75,Lakeview,Hillside,16.8,14,20,900,unreliable,active
+R076,Industrial â€“ Airport Line 76,Industrial,Airport,9.8,22,12,556,underutilized,active
+R077,Airport â€“ Suburb West Line 77,Airport,Suburb West,31.1,21,8,1086,unreliable,active
+R078,Harbor â€“ University Line 78,Harbor,University,26.8,21,12,462,high_performing,active
+R079,Old City â€“ North Line 79,Old City,North,32.0,13,15,647,high_performing,active
+R080,Suburb East â€“ Industrial Line 80,Suburb East,Industrial,20.4,27,15,700,unreliable,active
+R081,Industrial â€“ North Line 81,Industrial,North,33.2,10,15,166,overcrowded,active
+R082,Riverside â€“ Industrial Line 82,Riverside,Industrial,9.9,28,12,613,low_performing,active
+R083,North â€“ Central Line 83,North,Central,22.5,23,8,327,high_performing,active
+R084,Old City â€“ Lakeview Line 84,Old City,Lakeview,19.5,31,20,242,underutilized,active
+R085,Harbor â€“ Industrial Line 85,Harbor,Industrial,17.1,24,8,535,underutilized,active
+R086,Central â€“ Hillside Line 86,Central,Hillside,26.1,22,8,259,high_performing,active
+R087,Suburb East â€“ Central Line 87,Suburb East,Central,21.6,33,20,306,low_performing,active
+R088,North â€“ Airport Line 88,North,Airport,34.6,25,12,308,underutilized,active
+R089,Airport Loop 89,Airport,Airport,31.6,18,12,692,low_performing,active
+R090,Old City â€“ Central Line 90,Old City,Central,16.2,32,8,732,high_performing,active
+R091,Riverside â€“ Suburb East Line 91,Riverside,Suburb East,27.4,21,20,434,low_performing,active
+R092,University â€“ Riverside Line 92,University,Riverside,6.0,13,8,1512,unreliable,active
+R093,Old City â€“ University Line 93,Old City,University,14.7,30,15,495,high_performing,active
+R094,Suburb West â€“ Old City Line 94,Suburb West,Old City,19.8,19,15,533,underutilized,active
+R095,North Loop 95,North,North,24.9,27,6,220,low_performing,active
+R096,Riverside â€“ North Line 96,Riverside,North,13.1,30,6,145,underutilized,active
+R097,North â€“ Hillside Line 97,North,Hillside,35.7,16,15,650,unreliable,active
+R098,Industrial â€“ North Line 98,Industrial,North,8.4,22,6,464,overcrowded,active
+R099,Central â€“ North Line 99,Central,North,17.3,17,8,273,overcrowded,active
+R100,Harbor Loop 100,Harbor,Harbor,11.3,17,15,395,low_performing,active

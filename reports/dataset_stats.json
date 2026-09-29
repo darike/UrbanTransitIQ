@@ -1,0 +1,12 @@
+{
+  "trips": 510510,
+  "passenger_counts": 504307,
+  "tickets": 2061787,
+  "delays": 273557,
+  "routes": 100,
+  "stops": 500,
+  "vehicles": 250,
+  "passengers": 50000,
+  "days": 363,
+  "elapsed_sec": 28.0
+}
