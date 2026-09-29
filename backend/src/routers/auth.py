@@ -22,7 +22,7 @@ from backend.src.deps import current_user, make_token
 from database.models import AuditLog, User, get_db
 
 router = APIRouter()
-OUTBOX = os.path.join(os.path.dirname(__file__), "..", "..", "..", "reports", "email_outbox.log")
+OUTBOX = os.environ.get("UTIQ_OUTBOX") or os.path.join(os.path.dirname(__file__), "..", "..", "..", "reports", "email_outbox.log")
 
 
 def gen_code() -> str:

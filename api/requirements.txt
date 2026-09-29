@@ -1,0 +1,12 @@
+# Runtime-only dependencies for the Vercel deployment of the API.
+# fastparquet replaces pyarrow here: pyarrow alone would push the function past
+# Vercel's 250 MB bundle limit. Training / Spark deps stay in backend/requirements.txt.
+pandas==3.0.3
+numpy==2.4.6
+fastparquet==2026.9.0
+fastapi==0.140.0
+sqlalchemy==2.0.51
+bcrypt==5.0.0
+pydantic==2.13.4
+python-jose[cryptography]
+python-multipart

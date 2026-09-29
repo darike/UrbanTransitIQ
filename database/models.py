@@ -6,12 +6,13 @@ Parquet (read-only for the app) per the 2-tier design in Phase 13.
 """
 
 import datetime as dt
+import os
 
 from sqlalchemy import (Boolean, Column, DateTime, Integer, String, Text,
                         create_engine)
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-DB_URL = "sqlite:///database/urbantransit.db"   # swap for postgresql+psycopg2://... in prod
+DB_URL = os.environ.get("UTIQ_DB_URL", "sqlite:///database/urbantransit.db")   # postgresql+psycopg2://... in prod
 engine = create_engine(DB_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(bind=engine, autoflush=False)
 Base = declarative_base()

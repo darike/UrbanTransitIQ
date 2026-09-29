@@ -5,7 +5,10 @@
 
 import { useEffect, useState } from 'react'
 
-const BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8000'
+// production builds call the API on their own origin (Vercel serves /api/*)
+const BASE = import.meta.env.VITE_API_BASE ?? (import.meta.env.DEV ? 'http://localhost:8000' : '')
+// a serverless cold start loads the Parquet layer, so allow it longer than local dev
+const TIMEOUT_MS = import.meta.env.DEV ? 6000 : 25000
 
 let token = null
 try { token = sessionStorage.getItem('utiq-token') } catch { /* ignore */ }
@@ -23,7 +26,7 @@ export async function apiFetch(path, options = {}) {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...options.headers,
     },
-    signal: options.signal ?? AbortSignal.timeout(6000),
+    signal: options.signal ?? AbortSignal.timeout(TIMEOUT_MS),
   })
   if (!res.ok) throw new Error(`${res.status} ${path}`)
   return res.json()

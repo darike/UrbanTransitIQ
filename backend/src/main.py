@@ -11,7 +11,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..",
 
 from backend.src.routers import admin, auth, dashboards, entities, recommendations, whatif  # noqa: E402
 
-logging.basicConfig(filename="reports/app_errors.log", level=logging.ERROR)
+logging.basicConfig(filename=os.environ.get("UTIQ_LOG_FILE", "reports/app_errors.log"), level=logging.ERROR)
 
 app = FastAPI(title="UrbanTransit IQ API", version="1.0.0",
               description="Big Data + Data Science transport intelligence — TechWiz 7")
