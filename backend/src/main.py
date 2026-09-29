@@ -1,11 +1,3 @@
-"""
-UrbanTransit IQ — FastAPI backend (Phase 13).
-
-Serves the Parquet analytics layer + SQLite application DB to the React SPA.
-Run from the repo root:
-    uvicorn backend.src.main:app --reload --port 8000
-Swagger UI: http://localhost:8000/docs
-"""
 
 import logging
 import os

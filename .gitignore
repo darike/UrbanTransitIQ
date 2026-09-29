@@ -4,6 +4,8 @@ dist/
 __pycache__/
 *.pyc
 venv/
+.venv/
+.pytest_cache/
 
 # large generated data — regenerate with data_generator/generate_dataset.py
 # (1000-row samples for every table are committed in sample_data/)
@@ -21,5 +23,12 @@ tools/
 
 # runtime logs
 reports/app_errors.log
+reports/email_outbox.log
+
+# local environment files (keep configuration examples)
+.env
+.env.*
+*.env
+!*.env.example
 
 # keep: models/, reports/*.json, sample_data/, documentation/, screenshots/
