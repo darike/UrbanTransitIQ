@@ -2,7 +2,7 @@
 
 TechWiz 7 · Theme: TransitVerse Intelligence · Category: Data Science Intelligence Arena
 
-**Live demo (frontend):** https://urbantransit-iq.vercel.app · **Repository:** https://github.com/darike/UrbanTransitIQ
+**Live demo (frontend):** https://urbantransit-iq.vercel.app · **Technical blog:** https://urbantransit-iq.vercel.app/blog.html · **Repository:** https://github.com/darike/UrbanTransitIQ
 
 > The Vercel deployment hosts the React dashboard. The FastAPI backend (ML models + SQLite)
 > runs locally — see Quick start below; point the frontend at it with `VITE_API_BASE`.

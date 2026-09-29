@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>UrbanTransit IQ — Technical Blog</title>
+<meta name="description" content="Turning 2 million transport records into service decisions with Hadoop, Spark and dual ML pipelines — the full build story." />
+<style>
+  :root{
+    --bg:#0B1426; --panel:#121F38; --panel2:#1A2A47; --line:#243B63;
+    --text:#E6EDF7; --muted:#8FA3C2; --sky:#38BDF8; --green:#22C55E;
+    --amber:#F59E0B; --code-bg:#0D1830;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+       font:17px/1.75 Georgia,'Times New Roman',serif;-webkit-font-smoothing:antialiased}
+  .topbar{position:sticky;top:0;background:rgba(11,20,38,.92);backdrop-filter:blur(8px);
+          border-bottom:1px solid var(--line);z-index:10}
+  .topbar-in{max-width:1060px;margin:0 auto;padding:12px 20px;display:flex;
+             align-items:center;justify-content:space-between;
+             font-family:Segoe UI,system-ui,sans-serif;font-size:14px}
+  .brand{font-weight:700;color:var(--text);text-decoration:none}
+  .brand span{color:var(--sky)}
+  .topbar a.btn{color:var(--sky);text-decoration:none;border:1px solid var(--line);
+                padding:6px 14px;border-radius:8px}
+  .topbar a.btn:hover{background:var(--panel)}
+  article{max-width:760px;margin:0 auto;padding:48px 20px 80px}
+  .kicker{font-family:Segoe UI,system-ui,sans-serif;font-size:12px;font-weight:700;
+          letter-spacing:.25em;color:var(--sky);text-transform:uppercase}
+  h1{font-size:38px;line-height:1.25;margin:14px 0 10px}
+  .byline{font-family:Segoe UI,system-ui,sans-serif;color:var(--muted);font-size:14px;
+          margin-bottom:8px}
+  .byline b{color:var(--text)}
+  h2{font-size:26px;margin:52px 0 12px;line-height:1.35}
+  p{margin:0 0 20px}
+  a{color:var(--sky)}
+  strong{color:#fff}
+  figure{margin:30px 0}
+  figure img{width:100%;border-radius:10px;border:1px solid var(--line);display:block}
+  figcaption{font-family:Segoe UI,system-ui,sans-serif;font-size:13px;color:var(--muted);
+             font-style:italic;text-align:center;margin-top:10px;line-height:1.5}
+  pre{background:var(--code-bg);border:1px solid var(--line);border-radius:10px;
+      padding:18px 20px;overflow-x:auto;margin:24px 0;
+      font:13.5px/1.65 Consolas,'Courier New',monospace;color:#C9DCF5}
+  code{font-family:Consolas,'Courier New',monospace}
+  p code,li code{background:var(--code-bg);border:1px solid var(--line);
+                 border-radius:5px;padding:1px 6px;font-size:14.5px;color:#9CC8F0}
+  .cm{color:#5A7BA6}      /* comment */
+  .st{color:#7FD8A4}      /* string  */
+  .kw{color:#79B8FF}      /* keyword */
+  .nm{color:#F0B860}      /* number  */
+  ol,ul{margin:0 0 20px;padding-left:26px}
+  li{margin-bottom:10px}
+  table{width:100%;border-collapse:collapse;margin:24px 0;
+        font-family:Segoe UI,system-ui,sans-serif;font-size:15px}
+  th,td{border:1px solid var(--line);padding:9px 14px;text-align:left}
+  th{background:var(--panel2);color:#fff}
+  td b{color:var(--green)}
+  .stats{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+         padding:22px 26px;font-family:Segoe UI,system-ui,sans-serif;font-size:15.5px;
+         line-height:2;margin:26px 0}
+  .stats b{color:var(--sky)}
+  .footer-note{border-top:1px solid var(--line);margin-top:48px;padding-top:22px;
+               font-family:Segoe UI,system-ui,sans-serif;font-size:14px;color:var(--muted)}
+  @media(max-width:600px){h1{font-size:29px}h2{font-size:22px}body{font-size:16px}}
+</style>
+</head>
+<body>
+
+<nav class="topbar"><div class="topbar-in">
+  <a class="brand" href="/">UrbanTransit <span>IQ</span> · Technical Blog</a>
+  <a class="btn" href="/">Open the dashboard →</a>
+</div></nav>
+
+<article>
+  <div class="kicker">TechWiz 7 · TransitVerse Intelligence · Data Science Intelligence Arena</div>
+  <h1>Turning 2 Million Transport Records into Service Decisions with Hadoop, Spark and Dual ML Pipelines</h1>
+  <p class="byline">By <b>Team SFC Qorvex</b> · September 2026 ·
+     <a href="https://github.com/darike/UrbanTransitIQ">GitHub repo</a> ·
+     <a href="https://urbantransit-iq.vercel.app">live demo</a></p>
+
+  <p>Every city bus network quietly produces millions of records — ticket scans, passenger
+  counts, timetables, GPS pings, delay reports. Almost none of it turns into decisions.
+  Schedules are planned on spreadsheets, overcrowding is &ldquo;known&rdquo; anecdotally, and a route
+  that runs empty at noon keeps running empty at noon.</p>
+
+  <p>For TechWiz 7 (Data Science Intelligence Arena, theme: TransitVerse Intelligence), we
+  built <strong>UrbanTransit IQ</strong>: a Big Data + Data Science platform that ingests 2M+
+  transport records through Hadoop and Spark, cleans and joins them, trains
+  <strong>two independent ML pipelines</strong>, cross-checks their answers, and serves everything
+  to operators through a role-aware React dashboard with a live network map.</p>
+
+  <p>This post walks through the whole build — including the three times our own models
+  fooled us, and how we caught them.</p>
+
+  <figure><img src="/blog-assets/executive.jpg" alt="Executive Command Center dashboard" loading="lazy">
+  <figcaption>The Executive Command Center: live KPIs, network map, service status and AI
+  recommendations, all computed from the real pipeline.</figcaption></figure>
+
+  <h2>The problem, concretely</h2>
+  <p>The SRS asked for far more than charts: peak-period detection from actual demand (not
+  fixed slots), persistent-overcrowding detection (one packed trip must not condemn a route),
+  delay-pattern mining, demand forecasting that must <strong>beat a documented naive
+  baseline</strong>, route clustering, evidence-backed recommendations — and every predictive task
+  solved by <strong>both</strong> Spark MLlib and an independent Python pipeline, compared on 100+
+  unseen cases.</p>
+  <p>Minimum dataset: 2,000,000 ticketing records, 500,000 trip records, 100 routes, 500
+  stops, 250 vehicles, 50,000 passengers, 12 months of history, 250,000 delay records. No
+  ready-made dataset allowed.</p>
+
+  <h2>Step 1 — Generating a city that behaves like a city</h2>
+  <p>We wrote a seeded generator (NumPy, vectorised) that produces 2,061,787 ticket scans
+  across 510,510 trips and 363 days. Realism came from structure, not randomness: log-normal
+  route demand (a few heavy commuter spines, a long tail), AM/PM ridges, weekday/weekend
+  split, seasonal drift, ridership growth, payday spikes, stadium events — and delays driven
+  by a congestion model rather than coin flips:</p>
+
+<pre><code><span class="cm"># delay = f(route archetype, hour-of-day congestion, weekday, vehicle) × noise</span>
+congestion = (<span class="nm">1.0</span>
+              + <span class="nm">2.7</span> * np.exp(-((hour - <span class="nm">8.3</span>) ** <span class="nm">2</span>) / <span class="nm">2.2</span>)     <span class="cm"># AM ridge</span>
+              + <span class="nm">3.2</span> * np.exp(-((hour - <span class="nm">17.8</span>) ** <span class="nm">2</span>) / <span class="nm">2.6</span>))   <span class="cm"># PM ridge</span>
+congestion = np.where(weekend, <span class="nm">0.8</span>, congestion)
+mean_delay = <span class="nm">1.1</span> * congestion * dow_factor * archetype_factor * route_factor
+delay_min  = mean_delay * np.exp(rng.normal(<span class="nm">0</span>, <span class="nm">0.15</span>, n))</code></pre>
+
+  <p>Delays come from a congestion surface, so a model can genuinely learn them — and a
+  chronically late vehicle (V118) is planted for the anomaly layer. We also planted every
+  defect class the SRS wants caught: duplicate ticket scans within 120 seconds, duplicate
+  trips, swapped departure/arrival timestamps, negative passenger counts, unknown vehicle
+  IDs, missing route IDs — and 81,000 genuine capacity violations that must <strong>not</strong> be
+  cleaned away, because overcrowding is the core signal.</p>
+
+  <h2>Step 2 — HDFS and Spark, for real</h2>
+  <p>Our Windows dev machine had no Java, so the Big Data layer runs in WSL2 Ubuntu on the
+  same laptop: Java 17, Hadoop 3.4.1, PySpark 4.2.0. A single-node HDFS (started with
+  <code>hdfs --daemon start</code>, no ssh gymnastics) holds the raw zone:</p>
+
+<pre><code>$ hdfs dfs -du -h -s /urbantransit
+<span class="nm">344.6 M</span>  /urbantransit
+$ hdfs dfsadmin -report | head -3
+Live datanodes (<span class="nm">1</span>):
+Name: 127.0.0.1:9866 (localhost)
+DFS Used: <span class="nm">347.76 MB</span></code></pre>
+
+  <figure><img src="/blog-assets/hdfs_terminal.jpg" alt="WSL terminal with HDFS listing" loading="lazy">
+  <figcaption>The raw zone in real HDFS: 12 tables, 344.6 MB, replication 1 on a single-node
+  cluster.</figcaption></figure>
+
+  <p>Spark ingestion uses <strong>explicit schemas</strong> for the big tables (schema inference is
+  demonstrated once, on a small master table, and never trusted with 2M rows), then writes
+  month-partitioned Parquet:</p>
+
+<pre><code>tickets = spark.read.csv(path(<span class="st">"raw_data"</span>, <span class="st">"tickets.csv"</span>),
+                         header=<span class="kw">True</span>, schema=TICKETS_SCHEMA)
+(tickets
+ .withColumn(<span class="st">"month"</span>, F.date_format(<span class="st">"scan_time"</span>, <span class="st">"yyyy-MM"</span>))
+ .repartition(<span class="st">"month"</span>)
+ .write.mode(<span class="st">"overwrite"</span>)
+ .partitionBy(<span class="st">"month"</span>)
+ .parquet(path(<span class="st">"parquet_data"</span>, <span class="st">"tickets_by_month"</span>)))</code></pre>
+
+  <p>2,061,787 tickets ingested in 139 s on a laptop; the same job runs against
+  <code>hdfs://localhost:9000</code> with one environment variable.</p>
+
+  <h2>Step 3 — Data quality: 8 checks, 7 rules, 1 rule that keeps dirt in</h2>
+  <p>The quality layer detects each planted defect class (Q1–Q8) and cleans under documented
+  rules with a full audit trail — original record, rule ID, action. Two decisions mattered
+  more than the code:</p>
+  <p><strong>Duplicate scans</strong> are a window function, not a groupby — the same ticket ID
+  re-scanned within 120 s at a gate:</p>
+
+<pre><code>w = Window.partitionBy(<span class="st">"ticket_id"</span>).orderBy(<span class="st">"scan_time"</span>)
+dup = tickets.withColumn(<span class="st">"prev"</span>, F.lag(<span class="st">"scan_time"</span>).over(w)) \
+    .filter(F.unix_timestamp(<span class="st">"scan_time"</span>) - F.unix_timestamp(<span class="st">"prev"</span>) &lt;= <span class="nm">120</span>)</code></pre>
+
+  <p><strong>Rule R7 keeps capacity violations.</strong> 81,145 records show occupancy above 100%.
+  A naive cleaner would drop them as &ldquo;impossible&rdquo;. They are the most important rows in the
+  dataset.</p>
+
+  <figure><img src="/blog-assets/data_quality.jpg" alt="Data Quality dashboard page" loading="lazy">
+  <figcaption>Every cleaning decision is recorded: counts per check, action taken, and a
+  quarantine folder instead of silent deletes.</figcaption></figure>
+
+  <p>Because we implemented the pipeline twice (Spark, and a pandas/pyarrow engine for
+  machines without Java), we got cross-validation for free: <strong>both engines report identical
+  Q1–Q8 counts</strong> — 4,093 unknown route IDs, 8,181 duplicate scans, 510 duplicate trips,
+  201 negative counts, 102 ghost vehicles.</p>
+
+  <h2>Step 4 — Features without time travel</h2>
+  <p>The 23-feature analytical table joins nine tables and adds rolling context. The subtle
+  part: rolling features must never see the future — or even the present. Each trip's
+  <code>route_delay_7d</code> is computed from <strong>previous-day</strong> daily aggregates only:</p>
+
+<pre><code>roll = (daily.set_index(<span class="st">"service_date"</span>).groupby(<span class="st">"route_id"</span>)
+        [[<span class="st">"d_delay"</span>, <span class="st">"d_occ"</span>, <span class="st">"d_demand"</span>]]
+        .rolling(<span class="st">"7D"</span>).mean()
+        .groupby(level=<span class="nm">0</span>).shift(<span class="nm">1</span>))     <span class="cm"># ← shift(1): yesterday's window</span></code></pre>
+
+  <p><code>shift(1)</code> is the difference between a model and a leak.</p>
+
+  <h2>Step 5 — The model that scored 99.9% (and why we deleted it)</h2>
+  <p>Our first delay-severity classifier (5 classes: on-time → severe) hit
+  <strong>99.9% accuracy</strong>. In competition, that number is not a win — it's an alarm.</p>
+  <p>Two features were the culprits: <code>schedule_deviation_min</code> (actual minus planned
+  travel time) and <code>occupancy_pct</code> are measured <strong>during</strong> the trip. Predicting a
+  trip's delay from its own delay. We cut the feature set to pre-trip signals only — hour,
+  weekday, route geometry, headway, vehicle capacity, and the 7-day rolling route context —
+  and the honest number appeared:</p>
+
+  <table>
+    <tr><th>Algorithm (chronological 70/15/15 split)</th><th>Test accuracy</th></tr>
+    <tr><td>XGBoost (Python pipeline)</td><td><b>86.7%</b></td></tr>
+    <tr><td>RandomForest — Spark MLlib</td><td><b>86.1%</b> (F1 0.861)</td></tr>
+    <tr><td>RandomForest (Python)</td><td>85.6%</td></tr>
+    <tr><td>GBT One-vs-Rest — Spark MLlib</td><td>85.6%</td></tr>
+    <tr><td>LogisticRegression</td><td>76–79%</td></tr>
+  </table>
+
+  <p>Both pipelines clear the SRS target (≥85%), independently, from separate code paths —
+  Spark predictions are never copied into the Python side.</p>
+
+  <figure><img src="/blog-assets/dual_pipeline.jpg" alt="Spark vs Python comparison page" loading="lazy">
+  <figcaption>120 newest unseen cases: 99.2% agreement; every disagreement is an
+  adjacent-class boundary case, each with both models' probabilities.</figcaption></figure>
+
+  <h2>Step 6 — The forecaster that lost to &ldquo;same as last Tuesday&rdquo;</h2>
+  <p>Demand forecasting had a required humiliation built in: the SRS demands the model beat
+  a documented naive baseline. Our first XGBoost forecaster <strong>lost to lag-7 by 16%</strong>.
+  The fix was not more trees — it was framing:</p>
+  <ol>
+    <li><strong>Model the residual over the baseline</strong>, not the demand itself. The weekly cycle
+    is the baseline; the model only learns corrections.</li>
+    <li><strong>Trees cannot extrapolate a trend.</strong> Test-period trend values lie outside the
+    training range, so a tree predicts a constant there. A linear residual corrector
+    extrapolates; XGBoost was kept as a challenger and selected against on a held-out
+    validation window.</li>
+    <li><strong>The best features encode why the baseline fails</strong>: <code>hol_lag7</code> (&ldquo;seven days
+    ago was a holiday, so lag-7 under-counts today&rdquo;), payday flags, event days, a drift term
+    (<code>roll7 − roll28</code>).</li>
+  </ol>
+
+<pre><code>net[<span class="st">"resid"</span>]    = net[<span class="st">"demand"</span>] - net[<span class="st">"lag7"</span>]
+net[<span class="st">"hol_lag7"</span>] = net[<span class="st">"is_holiday"</span>].shift(<span class="nm">7</span>)          <span class="cm"># baseline's blind spot</span>
+FX = [<span class="st">"trend"</span>, <span class="st">"dom_start"</span>, <span class="st">"dom_start_lag7"</span>, <span class="st">"is_holiday"</span>,
+      <span class="st">"hol_lag7"</span>, <span class="st">"is_event"</span>, <span class="st">"event_lag7"</span>, <span class="st">"drift"</span>]
+<span class="cm"># candidates fit on train, selected on validation, reported on test:</span>
+<span class="cm"># linear_residual val-MAE 1961  &lt;  xgb_residual 4422  → linear selected</span></code></pre>
+
+  <p>Final, on the untouched last 28 days: <strong>MAE 2,190 vs naive 3,183 — 31.2% better</strong>,
+  with MAPE 3-ish and R² reported alongside. We also found a classic pandas trap here —
+  <code>dropna()</code> on a frame whose <code>special_event</code> column is mostly NaN silently
+  reduced training data to 4 rows. Subset your dropna.</p>
+
+  <figure><img src="/blog-assets/forecast.jpg" alt="Demand Forecast dashboard" loading="lazy">
+  <figcaption>56 days of history, 28-day forecast with interval band, and the baseline
+  comparison shown honestly.</figcaption></figure>
+
+  <h2>Step 7 — Crowding risk, clustering, recommendations</h2>
+  <ul>
+    <li><strong>Crowding risk</strong>: P(occupancy &gt; 100%) from pre-trip features only — XGBoost,
+    <strong>AUC 0.935</strong> — flags tomorrow's risky trips so capacity moves <em>before</em> the
+    overload.</li>
+    <li><strong>Route clustering</strong>: K-Means on demand/occupancy/delay/reliability, k chosen by
+    silhouette scan (k=5).</li>
+    <li><strong>Recommendations</strong>: every card carries its evidence, because the SRS forbids
+    unexplained advice:</li>
+  </ul>
+
+<pre><code>{
+  <span class="st">"action"</span>: <span class="st">"Increase R011 peak frequency (headway 12 → 8 min)"</span>,
+  <span class="st">"evidence"</span>: [
+    <span class="st">"Average occupancy: 96%"</span>,
+    <span class="st">"Overload events (occ&gt;100%): 4,313 in 12 months"</span>,
+    <span class="st">"Overload repeats across weekdays in the same period+direction"</span>
+  ],
+  <span class="st">"impact"</span>: <span class="st">"Est. peak occupancy → ~80%, waiting time −25–35%"</span>
+}</code></pre>
+
+  <figure><img src="/blog-assets/recommendations.jpg" alt="Recommendations page" loading="lazy">
+  <figcaption>No unexplained recommendations: action, evidence numbers, estimated impact,
+  priority.</figcaption></figure>
+
+  <h2>Step 8 — Serving it: FastAPI + React</h2>
+  <p>The app is two-tier: FastAPI reads the Parquet analytics layer (cached per-process)
+  plus a SQLite/PostgreSQL app DB (users, audit log, model registry), issues JWTs, and
+  enforces roles <strong>server-side</strong> — a non-admin token gets a 403 from the API, not just a
+  hidden button. Every dashboard endpoint honours shared filters and returns a written
+  <code>insight</code> string, because the SRS explicitly says conclusions, not just charts.</p>
+
+<pre><code><span class="kw">@router.get</span>(<span class="st">"/executive"</span>)
+<span class="kw">def</span> executive(f: dict = Depends(_filters)):
+    df = apply_filters(enriched(), **f)          <span class="cm"># route/direction/peak/days</span>
+    kpi = {<span class="st">"total_passengers"</span>: int(df[<span class="st">"boarded"</span>].sum()),
+           <span class="st">"on_time_pct"</span>: round(float((df[<span class="st">"delay_min"</span>] &lt;= <span class="nm">5</span>).mean() * <span class="nm">100</span>), <span class="nm">1</span>),
+           ...}
+    <span class="kw">return</span> {<span class="st">"kpi"</span>: kpi, <span class="st">"insight"</span>: build_insight(kpi, rs)}</code></pre>
+
+  <p>The React front end (Vite, framer-motion, recharts, react-leaflet) renders 15+ pages —
+  executive, passenger flow with an OD matrix, route performance with a per-route detail
+  panel, delay heat-maps, occupancy, forecast, a <strong>live network map</strong> on dark satellite
+  tiles with moving vehicles and pulsing delay hotspots, the dual-pipeline lab, data quality,
+  HDFS/Spark job monitor, recommendations, what-if simulator (all outputs labelled
+  <em>estimates</em>), reports, and a Power BI embed. If the backend is down, pages fall back to
+  demo data and say so with a visible badge — a graceful failure instead of a blank
+  screen.</p>
+
+  <figure><img src="/blog-assets/live_map.jpg" alt="Live network map" loading="lazy">
+  <figcaption>Segment load in neon (red = &gt;85%), vehicles coloured by live occupancy,
+  incident markers, hub demand labels.</figcaption></figure>
+
+  <figure><img src="/blog-assets/what_if.jpg" alt="What-If simulator" loading="lazy">
+  <figcaption>Frequency/capacity/demand sliders; every output is explicitly labelled an
+  estimate, per the SRS.</figcaption></figure>
+
+  <h2>What we'd tell any team doing this</h2>
+  <ol>
+    <li><strong>Treat great scores as bugs until proven otherwise.</strong> Our 99.9% classifier and
+    our first &ldquo;fine&rdquo; MLlib run (98.5%) were both leakage. The feature-set question to ask:
+    <em>would the operator know this number before departure?</em></li>
+    <li><strong>Make the baseline a first-class citizen.</strong> Losing to lag-7 taught us more about
+    our data than any hyper-parameter sweep. Residual modelling turned the baseline from an
+    enemy into a foundation.</li>
+    <li><strong>Implement twice if you can.</strong> The pandas engine wasn't just a Windows
+    workaround — matching Q1–Q8 counts across two independent implementations is the cheapest
+    correctness proof we've ever had.</li>
+    <li><strong>Keep the dirt you need.</strong> Cleaning is a policy, not a reflex; the overcrowding
+    &ldquo;violations&rdquo; were the product.</li>
+    <li><strong>Log your failures in the dev log.</strong> Evaluators trust a project that shows its
+    wrong turns and the fixes.</li>
+  </ol>
+
+  <h2>Numbers at a glance</h2>
+  <div class="stats">
+    <b>2,061,787</b> tickets · <b>510,510</b> trips · <b>100</b> routes · <b>500</b> stops ·
+    <b>250</b> vehicles · <b>12</b> months · <b>8</b> quality checks / <b>94,927</b> defects
+    handled · <b>23</b> features · classifier <b>86.7% / 86.1%</b> (Python / Spark MLlib) ·
+    forecast <b>+31.2%</b> vs baseline · crowding AUC <b>0.935</b> · dual-pipeline agreement
+    <b>99.2%</b> · <b>16/16</b> tests passing.
+  </div>
+
+  <p class="footer-note">
+    Repo: <a href="https://github.com/darike/UrbanTransitIQ">github.com/darike/UrbanTransitIQ</a> ·
+    Live demo: <a href="https://urbantransit-iq.vercel.app">urbantransit-iq.vercel.app</a> ·
+    Built for TechWiz 7 — Aptech's World Tech Championship, by Team SFC Qorvex.
+    AI-assisted development is declared in the repo's AI_USAGE.md; every analytical result is
+    produced by the project's own pipelines and models.
+  </p>
+</article>
+
+</body>
+</html>
