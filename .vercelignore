@@ -1,0 +1,25 @@
+# Only the Vite frontend is deployed to Vercel — exclude data, models, docs, backend
+backend/
+config/
+data_generator/
+database/
+dist/
+documentation/
+hdfs_scripts/
+models/
+new phase/
+node_modules/
+parquet_data/
+powerbi/
+processed_data/
+python_pipeline/
+quarantine/
+raw_data/
+recommendation_engine/
+reports/
+sample_data/
+screenshots/
+scripts/
+spark_jobs/
+spark_sql/
+tools/

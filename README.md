@@ -2,6 +2,11 @@
 
 TechWiz 7 · Theme: TransitVerse Intelligence · Category: Data Science Intelligence Arena
 
+**Live demo (frontend):** https://urbantransit-iq.vercel.app · **Repository:** https://github.com/darike/UrbanTransitIQ
+
+> The Vercel deployment hosts the React dashboard. The FastAPI backend (ML models + SQLite)
+> runs locally — see Quick start below; point the frontend at it with `VITE_API_BASE`.
+
 A 2-tier web application over a real Big Data pipeline: a **2.06M-record synthetic
 transport dataset** → quality analysis & cleaning → 9-table integration →
 23-feature analytical layer (Parquet) → **dual ML pipelines** (delay severity,
