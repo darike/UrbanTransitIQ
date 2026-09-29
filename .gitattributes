@@ -1,2 +1,13 @@
 # Store trained model binaries in Git Large File Storage.
 models/*.joblib filter=lfs diff=lfs merge=lfs -text
+
+# Binary files — never apply text/EOL conversion.
+*.pdf -text
+*.png -text
+*.jpg -text
+*.docx -text
+*.pptx -text
+*.zip -text
+*.parquet -text
+*.crc -text
+*.db -text

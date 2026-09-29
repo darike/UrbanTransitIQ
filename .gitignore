@@ -32,3 +32,5 @@ reports/email_outbox.log
 !*.env.example
 
 # keep: models/, reports/*.json, sample_data/, documentation/, screenshots/
+
+.vercel
