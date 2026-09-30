@@ -9,7 +9,7 @@ table, and pre-aggregated dashboard tables — all written to parquet_data/.
 Run:  python python_pipeline/process.py
 """
 
-import json
+import json # JSON handling
 import os
 import shutil
 import time
