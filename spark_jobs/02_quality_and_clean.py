@@ -8,7 +8,7 @@ decision (original record + rule id + action).
 Run:  spark-submit spark_jobs/02_quality_and_clean.py
 """
 
-import json
+import json # JSON handling
 import time
 
 from pyspark.sql import Window

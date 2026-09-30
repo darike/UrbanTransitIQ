@@ -9,7 +9,7 @@ forbids unexplained recommendations.
 Run:  python recommendation_engine/generate_recommendations.py
 """
 
-import json
+import json # JSON handling
 import os
 
 import pandas as pd
