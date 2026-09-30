@@ -15,6 +15,19 @@ transport dataset** → quality analysis & cleaning → 9-table integration →
 demand forecast, crowding risk, route clustering) → **FastAPI** backend (JWT +
 RBAC) → **React** dashboard SPA with a live network map.
 
+## Team — SFC Qorvex
+
+| Member | Area owned | What that involved |
+|---|---|---|
+| **Roman Ali** ([@Romanali110](https://github.com/Romanali110)) | Dataset generation, data quality and cleaning | Data simulation with per-route behaviour and deliberate defects; the verification and correction procedures |
+| **Hamza Mughal** ([@darike](https://github.com/darike)) | Spark platform, ingestion, integration and storage | Spark configuration, schema-strict loading, the Spark SQL joins, Parquet and HDFS storage |
+| **Warisha Rehman** ([@warishaarehamn](https://github.com/warishaarehamn)) | Feature engineering and analytics | Feature design, route scoring and ranking, problem-stop detection, passenger-flow and bunching analysis |
+| **Bisma Batool** ([@bismahbatool27](https://github.com/bismahbatool27)) | Machine learning, forecasting and model governance | Overcrowding models and their comparison, delay severity prediction, demand and occupancy forecasts, route clustering, model versioning |
+| **Abdul Moeed** | Recommendations, serving, access control and documentation | Recommendation and what-if rules, both interfaces, login and permission controls, tests, the project report |
+
+Full record: `documentation/Team and Contribution Record.pdf`. The repository was assembled and
+pushed from one machine, so the commit log does not reflect who authored which part.
+
 ## Quick start
 
 ```bash
