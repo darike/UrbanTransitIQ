@@ -81,7 +81,7 @@ audit.append(("R1", "trips", n0 - len(trips), "dropped exact duplicate trips (ke
 swapped = trips["actual_departure"] > trips["actual_arrival"]
 trips.loc[swapped, ["actual_departure", "actual_arrival"]] = \
     trips.loc[swapped, ["actual_arrival", "actual_departure"]].to_numpy()
-audit.append(("R2", "trips", int(swapped.sum()), "swapped reversed departure/arrival (GPS-confirmed order)"))
+audit.append(("R2", "trips", int(swapped.sum()), "swapped reversed departure/arrival"))
 
 ghost = ~trips["vehicle_id"].isin(veh_set)
 trips[ghost].to_parquet(f"{PROC}/quarantine/trips_unknown_vehicle.parquet", index=False)

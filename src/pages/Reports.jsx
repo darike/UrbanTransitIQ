@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { FileText, Download, Check } from 'lucide-react'
 import { Page, PageHeader, staggerParent, riseIn, SERIES } from '../components/ui.jsx'
+import { SourceBadge } from '../api/client.jsx'
 import {
   routes, stops, delayByRoute, comparisonRows, recommendations, anomalies, dataQuality,
 } from '../data/mockData'
@@ -29,7 +30,7 @@ const REPORTS = [
   { name: 'Route performance report', file: 'route_performance.csv', desc: 'Ranking, score, occupancy, punctuality, classification for every route', rows: () => routes, tag: 'Routes' },
   { name: 'Stop performance report', file: 'stop_performance.csv', desc: 'Boarding, alighting, dwell, delay and bottleneck flags per stop', rows: () => stops, tag: 'Stops' },
   { name: 'Delay analysis report', file: 'delay_analysis.csv', desc: 'Average and P90 delay with incident counts by route', rows: () => delayByRoute, tag: 'Delays' },
-  { name: 'Spark vs Python comparison', file: 'dual_pipeline_comparison.csv', desc: 'Case-level model comparison with probabilities and match status', rows: () => comparisonRows, tag: 'Models' },
+  { name: 'RandomForest vs XGBoost comparison', file: 'dual_pipeline_comparison.csv', desc: 'Case-level comparison of the two Python models with probabilities and match status', rows: () => comparisonRows, tag: 'Models' },
   { name: 'Recommendations export', file: 'recommendations.csv', desc: 'All evidence-based recommendations with priority and impact', rows: () => recommendations.map((r) => ({ ...r, evidence: r.evidence.join(' | ') })), tag: 'Decisions' },
   { name: 'Anomaly log', file: 'anomalies.csv', desc: 'Detected anomalies with severity, entity and detecting pipeline', rows: () => anomalies, tag: 'Anomalies' },
   { name: 'Data quality report', file: 'data_quality.csv', desc: 'Issue counts, cleaning actions and final status per check', rows: () => dataQuality, tag: 'Data' },
@@ -48,6 +49,7 @@ export default function Reports() {
       <PageHeader
         title="Reports & Export"
         subtitle="Downloadable analytical reports in CSV (Excel-compatible) — role-gated in production"
+        right={<SourceBadge live={false} />}
       />
       <motion.div variants={staggerParent} initial="initial" animate="animate" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 14 }}>
         {REPORTS.map((r, i) => (

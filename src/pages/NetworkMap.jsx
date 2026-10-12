@@ -5,6 +5,7 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { Radio, Layers } from 'lucide-react'
 import { Page, PageHeader, riseIn, SERIES, STATUS } from '../components/ui.jsx'
+import { SourceBadge } from '../api/client.jsx'
 import { MAP_CENTER, MAP_ZOOM, geoStops, geoRoutes, liveVehicles } from '../data/geoData'
 import { Map as MapIcon } from 'lucide-react'
 
@@ -102,17 +103,18 @@ export default function NetworkMap() {
   return (
     <Page>
       <PageHeader
-        title="Live Network Map"
-        subtitle="Citywide operations — glowing segments = load, heat zones = crowding & delay hotspots"
+        title="Simulated Network View"
+        subtitle="Simulated citywide operations (browser-animated vehicles, not GPS) — glowing segments = load, heat zones = crowding & delay hotspots"
         icon={MapIcon} accent="#38bdf8"
         right={
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+            <SourceBadge live={false} />
             <button className={`btn ${mode === 'load' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => setMode('load')}>
               <Layers size={14} /> Segment load
             </button>
             <button className={`btn ${mode === 'delay' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => setMode('delay')}>Delay hotspots</button>
             <button className={`btn ${live ? 'btn-primary' : 'btn-ghost'}`} onClick={() => setLive(!live)}>
-              <Radio size={14} /> {live ? 'Live' : 'Paused'}
+              <Radio size={14} /> {live ? 'Playing' : 'Paused'}
             </button>
             <select value={basemap} onChange={(e) => setBasemap(e.target.value)} style={{ fontSize: 12.5 }}>
               {Object.keys(BASEMAPS).map((b) => <option key={b}>{b}</option>)}
@@ -128,7 +130,7 @@ export default function NetworkMap() {
             background: 'rgba(6,12,28,0.88)', border: '1px solid rgba(99,139,255,0.4)', borderRadius: 999,
             padding: '5px 12px', fontSize: 11.5, fontWeight: 700, color: '#4ec44e',
           }}>
-            <span className="live-dot" /> LIVE · {vehiclesRef.current.length} vehicles
+            <span className="live-dot" /> SIMULATED · {vehiclesRef.current.length} vehicles
           </span>
         )}
         <MapContainer center={MAP_CENTER} zoom={MAP_ZOOM} style={{ height: '72vh', borderRadius: 12, background: '#04070f' }} scrollWheelZoom>
@@ -234,7 +236,7 @@ export default function NetworkMap() {
               <span><i className="lg-dot" style={{ background: '#ff4d5e' }} /> ≥ 10 min · glow zones = delay heat</span>
             </>
           )}
-          <span style={{ marginLeft: 'auto' }}>⚠ = live incident · 🚌 = vehicle (color = occupancy)</span>
+          <span style={{ marginLeft: 'auto' }}>⚠ = simulated incident · 🚌 = vehicle (color = occupancy)</span>
         </div>
       </motion.div>
     </Page>

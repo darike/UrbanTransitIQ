@@ -19,8 +19,7 @@ export default function Forecast() {
     ...api.forecast.map((f) => ({ week: f.service_date.slice(5), actual: null, forecast: f.forecast, lower: f.lower, upper: f.upper })),
   ] : demandForecast
   const metrics = api ? {
-    spark: { model: 'XGBoost residual-over-baseline (deployed)', mae: api.metrics.model.MAE, rmse: api.metrics.model.RMSE, mape: api.metrics.model.MAPE_pct, r2: api.metrics.model.R2 },
-    python: { model: 'XGBoost (validation run)', mae: api.metrics.model.MAE, rmse: api.metrics.model.RMSE, mape: api.metrics.model.MAPE_pct, r2: api.metrics.model.R2 },
+    model: { model: 'Linear residual over 7-day baseline (selected)', mae: api.metrics.model.MAE, rmse: api.metrics.model.RMSE, mape: api.metrics.model.MAPE_pct, r2: api.metrics.model.R2 },
     baseline: { model: 'Naive seasonal baseline (lag-7)', mae: api.metrics.naive_seasonal_baseline.MAE, rmse: api.metrics.naive_seasonal_baseline.RMSE, mape: api.metrics.naive_seasonal_baseline.MAPE_pct, r2: api.metrics.naive_seasonal_baseline.R2 },
   } : forecastMetrics
 
@@ -61,10 +60,10 @@ export default function Forecast() {
         </ChartCard>
       </motion.div>
 
-      <motion.div variants={staggerParent} initial="initial" animate="animate" className="grid grid-3" style={{ marginTop: 16 }}>
+      <motion.div variants={staggerParent} initial="initial" animate="animate" className="grid grid-2" style={{ marginTop: 16 }}>
         {Object.entries(metrics).map(([key, m], i) => (
           <motion.div key={key} variants={riseIn} className="card"
-            style={{ borderTop: `2px solid ${key === 'python' ? SERIES[2] : key === 'spark' ? SERIES[0] : 'var(--border-strong)'}` }}>
+            style={{ borderTop: `2px solid ${key === 'model' ? SERIES[0] : 'var(--border-strong)'}` }}>
             <p className="card-title">{m.model}</p>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginTop: 10 }}>
               {[['MAE', m.mae.toLocaleString()], ['RMSE', m.rmse.toLocaleString()], ['MAPE', `${m.mape}%`], ['R²', m.r2]].map(([k, v]) => (
@@ -76,7 +75,7 @@ export default function Forecast() {
             </div>
             {key === 'baseline' && (
               <p style={{ fontSize: 11.5, color: 'var(--text-muted)', marginTop: 8, marginBottom: 0 }}>
-                Both models beat the documented naive baseline by &gt;55% MAE — SRS accuracy requirement met.
+                The selected model cuts the naive baseline MAE by {api ? api.metrics.improvement_MAE_pct : 31.2}% — SRS accuracy requirement met.
               </p>
             )}
           </motion.div>

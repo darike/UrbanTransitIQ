@@ -6,13 +6,14 @@ import {
 import { Page, PageHeader, KpiCard, staggerParent, riseIn, SERIES, STATUS } from '../components/ui.jsx'
 import { useApi, SourceBadge } from '../api/client.jsx'
 
-/* Mirrors `hdfs dfs -ls -R /urbantransit` + Spark History Server output.
-   In production: GET /api/admin/hdfs-status and GET /api/admin/spark-jobs. */
+/* Illustrative view of `hdfs dfs -ls -R /urbantransit` + Spark History Server output.
+   Record counts are the real pipeline figures; file sizes/durations/job IDs are illustrative.
+   Future work: live GET /api/admin/hdfs-status and GET /api/admin/spark-jobs (not implemented yet). */
 
 const HDFS_TREE = [
   {
     name: '/urbantransit/raw_data', type: 'dir', children: [
-      { name: 'tickets_2025_10.csv … tickets_2026_09.csv', type: 'file', size: '1.94 GB', repl: 1, note: '12 monthly files · 2.41M rows' },
+      { name: 'tickets_2025_10.csv … tickets_2026_09.csv', type: 'file', size: '1.94 GB', repl: 1, note: '12 monthly files · 2.06M rows' },
       { name: 'passenger_counts.csv', type: 'file', size: '412 MB', repl: 1, note: '500k trip-level records' },
       { name: 'delays.json', type: 'file', size: '188 MB', repl: 1, note: '250k delay events' },
       { name: 'routes.csv · stops.csv · vehicles.csv · schedules.csv', type: 'file', size: '9.4 MB', repl: 1, note: 'master tables' },
@@ -27,7 +28,7 @@ const HDFS_TREE = [
   },
   {
     name: '/urbantransit/parquet_data', type: 'dir', children: [
-      { name: 'trips_enriched.parquet', type: 'file', size: '412 MB', repl: 1, note: 'partitioned by month, route — 23 features' },
+      { name: 'trips_enriched.parquet', type: 'file', size: '412 MB', repl: 1, note: 'partitioned by month — 37 columns' },
       { name: 'od_matrix.parquet', type: 'file', size: '31 MB', repl: 1, note: 'origin-destination flows' },
       { name: 'route_scores.parquet', type: 'file', size: '2.1 MB', repl: 1, note: 'performance scoring output' },
       { name: 'forecasts.parquet', type: 'file', size: '5.8 MB', repl: 1, note: 'demand + occupancy predictions' },
@@ -36,15 +37,14 @@ const HDFS_TREE = [
 ]
 
 const SPARK_JOBS = [
-  { id: 'app-20260928-0041', name: 'ingest_raw_to_hdfs', stage: 'Ingestion', status: 'success', duration: '3m 41s', records: '2,412,480', started: '06:00' },
-  { id: 'app-20260928-0042', name: 'data_quality_checks', stage: 'Quality', status: 'success', duration: '2m 12s', records: '34,131 issues', started: '06:05' },
-  { id: 'app-20260928-0043', name: 'clean_and_quarantine', stage: 'Cleaning', status: 'success', duration: '4m 03s', records: '2,379,204', started: '06:08' },
+  { id: 'app-20260928-0041', name: 'ingest_raw_to_hdfs', stage: 'Ingestion', status: 'success', duration: '3m 41s', records: '2,061,787', started: '06:00' },
+  { id: 'app-20260928-0042', name: 'data_quality_checks', stage: 'Quality', status: 'success', duration: '2m 12s', records: '14,203 issues', started: '06:05' },
+  { id: 'app-20260928-0043', name: 'clean_and_quarantine', stage: 'Cleaning', status: 'success', duration: '4m 03s', records: '2,053,606', started: '06:08' },
   { id: 'app-20260928-0044', name: 'spark_sql_joins_9_tables', stage: 'Integration', status: 'success', duration: '6m 27s', records: '9 tables', started: '06:13' },
-  { id: 'app-20260928-0045', name: 'feature_engineering', stage: 'Features', status: 'success', duration: '5m 55s', records: '23 features', started: '06:20' },
+  { id: 'app-20260928-0045', name: 'feature_engineering', stage: 'Features', status: 'success', duration: '5m 55s', records: '37 columns', started: '06:20' },
   { id: 'app-20260928-0046', name: 'write_parquet_partitioned', stage: 'Storage', status: 'success', duration: '1m 48s', records: '412 MB', started: '06:26' },
   { id: 'app-20260928-0047', name: 'mllib_delay_classifier_train', stage: 'MLlib', status: 'success', duration: '11m 32s', records: 'RF · GBT · LR', started: '06:30' },
   { id: 'app-20260928-0048', name: 'demand_forecast_batch', stage: 'MLlib', status: 'running', duration: '4m 10s…', records: '—', started: '07:02' },
-  { id: 'app-20260927-0038', name: 'mllib_kmeans_route_clusters', stage: 'MLlib', status: 'success', duration: '3m 05s', records: 'k=4 · silhouette 0.61', started: 'yesterday' },
   { id: 'app-20260927-0031', name: 'ingest_raw_to_hdfs', stage: 'Ingestion', status: 'failed', duration: '0m 44s', records: 'OOM — executor 2g→4g fixed', started: 'yesterday' },
 ]
 

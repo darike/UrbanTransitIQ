@@ -7,6 +7,7 @@ import { Clock } from 'lucide-react'
 import {
   Page, PageHeader, ChartCard, VizTooltip, TimeTabs, staggerParent, riseIn, SERIES, INK, STATUS,
 } from '../components/ui.jsx'
+import { SourceBadge } from '../api/client.jsx'
 import { delayByRoute, delaySeverityDist, delayHeatmap, delayPatterns } from '../data/mockData'
 import { useFilteredData } from '../FilterContext.jsx'
 
@@ -64,7 +65,7 @@ export default function Delays() {
         title="Delay Intelligence"
         subtitle={`Delay distribution, recurring patterns, and severity — Spark SQL over 250k delay records${filters.route !== 'all' ? ` · filtered: ${filters.route}` : ''}`}
         icon={Clock} accent="#e66767"
-        right={<TimeTabs />}
+        right={<div style={{ display: 'flex', alignItems: 'center', gap: 10 }}><SourceBadge live={false} /><TimeTabs /></div>}
       />
 
       <motion.div variants={staggerParent} initial="initial" animate="animate" className="grid grid-23">

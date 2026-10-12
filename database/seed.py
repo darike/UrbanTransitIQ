@@ -50,7 +50,7 @@ def main():
                               metric_name="test_accuracy",
                               metric_value=str(mm["delay_severity_classifier"]["algorithms_compared"]["RandomForest"]["test_accuracy"]),
                               path="models/delay_severity_rf.joblib"),
-                ModelRegistry(name="demand_forecast_xgb", version="forecast_v1.0",
+                ModelRegistry(name="demand_forecast_linear_residual", version="forecast_linear_residual_v1.1",
                               metric_name="MAPE_pct",
                               metric_value=str(mm["demand_forecast"]["model"]["MAPE_pct"]),
                               path="models/demand_forecast_xgb.joblib"),

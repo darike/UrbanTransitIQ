@@ -8,6 +8,7 @@ import { Gauge, AlertOctagon, Bus, Percent } from 'lucide-react'
 import {
   Page, PageHeader, KpiCard, ChartCard, VizTooltip, Meter, TimeTabs, staggerParent, riseIn, SERIES, INK, STATUS,
 } from '../components/ui.jsx'
+import { SourceBadge } from '../api/client.jsx'
 import { occupancyBands, highRiskTrips, occupancyTrend } from '../data/mockData'
 import { useFilteredData } from '../FilterContext.jsx'
 
@@ -24,13 +25,13 @@ export default function Occupancy() {
         title="Occupancy & Crowding"
         subtitle={`Occupancy bands, persistent overcrowding, and crowding-risk prediction${filters.route !== 'all' ? ` · filtered: ${filters.route}` : ''}`}
         icon={Gauge} accent="#9085e9"
-        right={<TimeTabs />}
+        right={<div style={{ display: 'flex', alignItems: 'center', gap: 10 }}><SourceBadge live={false} /><TimeTabs /></div>}
       />
 
       <motion.div key={`${filters.range}-${filters.route}-${filters.occupancy}`} variants={staggerParent} initial="initial" animate="animate" className="grid kpi-grid">
-        <KpiCard label="Avg Occupancy (selection)" value={kpi.avgOccupancy} decimals={1} suffix="%" delta={2.9} icon={Gauge} accent="#9085e9" />
-        <KpiCard label="Capacity Utilization" value={+(kpi.avgOccupancy * 0.93).toFixed(1)} decimals={1} suffix="%" delta={1.4} icon={Percent} accent={SERIES[2]} />
-        <KpiCard label="Overcrowded Trips" value={Math.round(5100 * scale * (frs.length / 12))} delta={8.2} deltaGood={false} icon={AlertOctagon} accent={STATUS.critical} vsLabel={filters.range} />
+        <KpiCard label="Avg Occupancy (selection)" value={kpi.avgOccupancy} decimals={1} suffix="%" icon={Gauge} accent="#9085e9" />
+        <KpiCard label="Capacity Utilization" value={+(kpi.avgOccupancy * 0.93).toFixed(1)} decimals={1} suffix="%" icon={Percent} accent={SERIES[2]} />
+        <KpiCard label="Overcrowded Trips" value={Math.round(5100 * scale * (frs.length / 12))} icon={AlertOctagon} accent={STATUS.critical} />
         <KpiCard label="High-Risk Trips (next 24h)" value={riskTrips.length} icon={Bus} accent={STATUS.serious} />
       </motion.div>
 

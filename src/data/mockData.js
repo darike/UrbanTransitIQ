@@ -230,10 +230,11 @@ export const demandForecast = Array.from({ length: 12 }, (_, i) => {
   }
 })
 
+// Real forecast = one selected model (linear residual, Python) vs the naive baseline
+// (reports/model_metrics.json → demand_forecast). No Spark forecast model exists.
 export const forecastMetrics = {
-  spark: { model: 'GBT Regressor (Spark MLlib)', mae: 4210, rmse: 5830, mape: 3.4, r2: 0.91 },
-  python: { model: 'XGBoost (Python)', mae: 3980, rmse: 5510, mape: 3.1, r2: 0.93 },
-  baseline: { model: 'Naive seasonal baseline', mae: 9860, rmse: 13240, mape: 8.2, r2: 0.64 },
+  model: { model: 'Linear residual over 7-day baseline (selected)', mae: 2190, rmse: 3218, mape: 3.6, r2: 0.98 },
+  baseline: { model: 'Naive seasonal baseline (lag-7)', mae: 3183, rmse: 4728, mape: 5.3, r2: 0.95 },
 }
 
 export const futurePeaks = [
@@ -331,12 +332,15 @@ export const recommendations = [
 /* ------------------------------------------------------------------ */
 /* Dual pipeline comparison                                            */
 /* ------------------------------------------------------------------ */
+// 120-case comparison is RandomForest vs XGBoost, BOTH in Python
+// (reports/dual_pipeline_comparison.json). Spark MLlib is a separate run.
 export const pipelineSummary = {
   task: 'Delay severity classification (5 classes)',
   cases: 120,
-  agreement: 91.7,
-  spark: { model: 'Random Forest (Spark MLlib)', accuracy: 87.2, f1: 0.84, version: 'v3.2' },
-  python: { model: 'XGBoost Classifier (Python)', accuracy: 88.9, f1: 0.86, version: 'v2.7' },
+  agreement: 99.2,
+  spark: { model: 'RandomForest (Python)', accuracy: 85.6, f1: 0.71 },
+  python: { model: 'XGBoost (Python)', accuracy: 86.7, f1: 0.70 },
+  sparkMllib: { model: 'RandomForest (Spark MLlib)', accuracy: 86.1, f1: 0.861 },
 }
 
 const sevClasses = ['On Time', 'Minor', 'Moderate', 'Major', 'Severe']
@@ -439,19 +443,20 @@ export const whatIfBase = {
   route: 'R12',
   frequency: 5, // trips/hour
   capacity: 60,
-  demand: 4200, // peak-hour passengers
+  demand: 282, // peak-hour passengers (gives ~94% occupancy at 5 trips/h × 60 seats)
   occupancy: 94,
   waitMin: 6.0,
   overcrowdRisk: 0.86,
 }
 
+// Real 8 quality checks (Q1–Q8) with counts from reports/data_quality_report.json
 export const dataQuality = [
-  { check: 'Missing ticket records', found: 18240, action: 'Imputed from gate counts', status: 'resolved' },
-  { check: 'Duplicate ticket transactions', found: 9412, action: 'Removed (kept first scan)', status: 'resolved' },
-  { check: 'Invalid timestamps', found: 3105, action: 'Quarantined', status: 'quarantined' },
-  { check: 'Departure before arrival', found: 1288, action: 'Swapped where GPS confirms', status: 'resolved' },
-  { check: 'Negative passenger counts', found: 402, action: 'Set to null + flagged', status: 'flagged' },
-  { check: 'Vehicle capacity violations', found: 1240, action: 'Kept — real overcrowding', status: 'kept' },
-  { check: 'Broken stop sequences', found: 356, action: 'Rebuilt from route master', status: 'resolved' },
-  { check: 'Unknown vehicle IDs', found: 88, action: 'Quarantined', status: 'quarantined' },
+  { check: 'Missing/unknown route IDs', found: 4093, action: 'Nulled, then recovered via trip join', status: 'resolved' },
+  { check: 'Duplicate ticket scans (≤120s)', found: 8181, action: 'Removed (kept first scan)', status: 'resolved' },
+  { check: 'Duplicate trip records', found: 510, action: 'Dropped exact duplicates', status: 'resolved' },
+  { check: 'Invalid timestamps (null arrival)', found: 606, action: 'Imputed = sched + route median delay', status: 'resolved' },
+  { check: 'Departure after arrival', found: 510, action: 'Swapped back (order confirmed)', status: 'resolved' },
+  { check: 'Negative passenger counts', found: 201, action: 'Nulled + quarantined copy', status: 'quarantined' },
+  { check: 'Unknown vehicle IDs', found: 102, action: 'Trips quarantined', status: 'quarantined' },
+  { check: 'Capacity violations (>100%)', found: 80724, action: 'KEPT — genuine overcrowding', status: 'kept' },
 ]

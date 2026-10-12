@@ -24,13 +24,13 @@ const STATUS_BADGE = {
 }
 
 const PIPELINE = [
-  { stage: 'Raw ingestion (HDFS)', records: '2,412,480', note: 'CSV + JSON + Parquet, multi-file, explicit schemas' },
-  { stage: 'Schema validation', records: '2,412,480', note: '17 checks: types, IDs, timestamps, referential integrity' },
-  { stage: 'Data-quality analysis', records: '34,131 issues', note: 'missing, duplicates, invalid, impossible values' },
-  { stage: 'Cleaning & quarantine', records: '2,379,204 clean', note: 'documented rules; original + corrected value retained' },
+  { stage: 'Raw ingestion (HDFS)', records: '2,061,787', note: 'CSV + JSON + Parquet, multi-file, explicit schemas' },
+  { stage: 'Schema validation', records: '2,061,787', note: '8 checks: types, IDs, timestamps, referential integrity' },
+  { stage: 'Data-quality analysis', records: '14,203 issues', note: 'missing, duplicates, invalid, impossible values' },
+  { stage: 'Cleaning & quarantine', records: '2,053,606 clean', note: 'documented rules; original + corrected value retained' },
   { stage: 'Spark SQL joins', records: '9 tables joined', note: 'tickets→trips→routes→stops→vehicles→schedules→delays' },
-  { stage: 'Feature engineering', records: '23 features', note: 'occupancy %, headway, punctuality, load factor…' },
-  { stage: 'Parquet output', records: '412 MB', note: 'partitioned by month + route for analytical reads' },
+  { stage: 'Feature engineering', records: '37 columns', note: 'occupancy %, headway, punctuality, load factor…' },
+  { stage: 'Parquet output', records: '503,703 rows', note: 'partitioned by month for analytical reads' },
 ]
 
 export default function DataQuality() {
@@ -41,12 +41,12 @@ export default function DataQuality() {
         check: label, found: checks[k] ?? 0, action, status,
       }))
     : mockDq
-  const ingested = 2061940
-  const clean = checks?.rows_tickets_clean ?? 2379204
+  const ingested = checks?.rows_tickets_raw ?? 2061787
+  const clean = checks?.rows_tickets_clean ?? 2053606
   const issues = checks
     ? Object.entries(checks).filter(([k]) => k.startsWith('Q') && k !== 'Q8_capacity_violations_kept')
         .reduce((s, [, v]) => s + v, 0)
-    : 34131
+    : 14203
   return (
     <Page>
       <PageHeader
@@ -59,7 +59,7 @@ export default function DataQuality() {
         <KpiCard label="Ticket Records Ingested" value={ingested} icon={Database} />
         <KpiCard label="Clean Ticket Records" value={clean} icon={FileCheck2} accent={SERIES[2]} />
         <KpiCard label="Defects Detected" value={issues} icon={Layers} accent={STATUS.serious} />
-        <KpiCard label="Overcrowding Kept" value={checks?.Q8_capacity_violations_kept ?? 81145} icon={HardDrive} accent={SERIES[6]} />
+        <KpiCard label="Overcrowding Kept" value={checks?.Q8_capacity_violations_kept ?? 80724} icon={HardDrive} accent={SERIES[6]} />
       </motion.div>
 
       <motion.div variants={staggerParent} initial="initial" animate="animate" className="grid grid-32" style={{ marginTop: 16 }}>
