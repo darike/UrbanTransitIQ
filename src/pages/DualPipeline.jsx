@@ -30,16 +30,16 @@ export default function DualPipeline() {
     <Page>
       <PageHeader
         title="Dual-Pipeline Comparison"
-        subtitle={`${summary.task} · ${summary.cases} unseen cases · two independently trained pipelines`}
+        subtitle={`${summary.task} · ${summary.cases} unseen cases · two independently trained Python pipelines`}
         right={<SourceBadge live={live} />}
       />
 
       <motion.div variants={staggerParent} initial="initial" animate="animate" className="grid grid-3">
         <motion.div variants={riseIn} className="card" style={{ textAlign: 'center', borderTop: `2px solid ${SERIES[0]}` }}>
-          <p className="card-title">Spark MLlib</p>
+          <p className="card-title">RandomForest (Python)</p>
           <div style={{ fontSize: 30, fontWeight: 800 }}><AnimatedNumber value={summary.spark.accuracy} decimals={1} suffix="%" /></div>
           <p style={{ fontSize: 12, color: 'var(--text-muted)', margin: '2px 0 0' }}>
-            {summary.spark.model} · F1 {summary.spark.f1} · {summary.spark.version}
+            delay severity · macro-F1 {summary.spark.f1}
           </p>
         </motion.div>
         <motion.div variants={riseIn} className="card" style={{ textAlign: 'center', borderTop: `2px solid ${STATUS.good}` }}>
@@ -54,13 +54,19 @@ export default function DualPipeline() {
           </p>
         </motion.div>
         <motion.div variants={riseIn} className="card" style={{ textAlign: 'center', borderTop: `2px solid ${SERIES[2]}` }}>
-          <p className="card-title">Python Data Science</p>
+          <p className="card-title">XGBoost (Python)</p>
           <div style={{ fontSize: 30, fontWeight: 800 }}><AnimatedNumber value={summary.python.accuracy} decimals={1} suffix="%" /></div>
           <p style={{ fontSize: 12, color: 'var(--text-muted)', margin: '2px 0 0' }}>
-            {summary.python.model} · F1 {summary.python.f1} · {summary.python.version}
+            delay severity · macro-F1 {summary.python.f1}
           </p>
         </motion.div>
       </motion.div>
+
+      <p style={{ fontSize: 12, color: 'var(--text-muted)', margin: '12px 2px 0' }}>
+        The 120-case cross-check above compares two Python models (RandomForest vs XGBoost).
+        The Spark MLlib RandomForest is trained and evaluated separately: {summary.sparkMllib.accuracy}% accuracy ·
+        weighted-F1 {summary.sparkMllib.f1} (reports/mllib_metrics.json).
+      </p>
 
       <motion.div variants={staggerParent} initial="initial" animate="animate" className="grid grid-32" style={{ marginTop: 16 }}>
         <ChartCard title="Agreement by predicted class" sub="Where the two pipelines disagree, it is concentrated at class boundaries" height={260}>
@@ -80,9 +86,9 @@ export default function DualPipeline() {
         <motion.div variants={riseIn} className="card">
           <p className="card-title" style={{ color: 'var(--text-primary)', fontSize: 14 }}>Why do they disagree?</p>
           <div style={{ fontSize: 12.5, color: 'var(--text-secondary)', display: 'grid', gap: 10, lineHeight: 1.55 }}>
-            <div><b style={{ color: 'var(--text-primary)' }}>Feature weighting.</b> XGBoost assigns ~1.8× more importance to the rolling 7-day delay feature than Spark's Random Forest, so near-threshold trips tip differently.</div>
+            <div><b style={{ color: 'var(--text-primary)' }}>Feature weighting.</b> XGBoost assigns ~1.8× more importance to the rolling 7-day delay feature than the Random Forest, so near-threshold trips tip differently.</div>
             <div><b style={{ color: 'var(--text-primary)' }}>Class boundaries.</b> 78% of mismatches are adjacent classes (Minor ↔ Moderate), never 2+ classes apart.</div>
-            <div><b style={{ color: 'var(--text-primary)' }}>Training independence.</b> Same underlying records, separate preprocessing and training — Spark predictions are never copied into the Python pipeline (SRS integrity rule).</div>
+            <div><b style={{ color: 'var(--text-primary)' }}>Training independence.</b> Same underlying records, separate preprocessing and training — RandomForest predictions are never copied into the XGBoost pipeline (SRS integrity rule).</div>
           </div>
         </motion.div>
       </motion.div>
@@ -103,8 +109,8 @@ export default function DualPipeline() {
             <thead>
               <tr>
                 <th>Trip</th><th>Route</th><th>Actual</th>
-                <th>Spark</th><th className="num">p</th>
-                <th>Python</th><th className="num">p</th>
+                <th>RandomForest</th><th className="num">p</th>
+                <th>XGBoost</th><th className="num">p</th>
                 <th className="num">Δp</th><th>Match</th><th>Explanation</th>
               </tr>
             </thead>

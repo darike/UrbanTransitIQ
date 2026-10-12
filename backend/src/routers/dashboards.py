@@ -112,7 +112,7 @@ def forecast():
     return {"history": hist.assign(service_date=hist["service_date"].astype(str)).to_dict("records"),
             "forecast": fut.assign(service_date=fut["service_date"].astype(str)).to_dict("records"),
             "metrics": m,
-            "insight": f"The XGBoost forecaster beats the naive seasonal baseline by "
+            "insight": f"The linear-residual forecaster beats the naive seasonal baseline by "
                        f"{m['improvement_MAE_pct']}% MAE on the untouched last 28 days."}
 
 

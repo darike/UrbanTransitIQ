@@ -22,7 +22,7 @@ def _load_secret() -> str:
     env = os.environ.get("UTIQ_JWT_SECRET")
     if env:
         return env
-    path = os.path.join(os.path.dirname(__file__), "..", "..", "..", "config", ".jwt_secret")
+    path = os.path.join(os.path.dirname(__file__), "..", "..", "config", ".jwt_secret")
     if os.path.exists(path):
         return open(path, encoding="utf-8").read().strip()
     key = secrets.token_hex(32)

@@ -93,10 +93,10 @@ function NetworkModelCard() {
         style={{ ...glass, position: 'absolute', top: 74, right: 20, padding: '12px 16px', zIndex: 3, borderRadius: 14 }}
       >
         <div style={{ fontSize: 24, fontWeight: 850, color: '#fff', letterSpacing: '-0.02em' }}>
-          <AnimatedNumber value={88.9} decimals={1} suffix="%" />
+          <AnimatedNumber value={86.7} decimals={1} suffix="%" />
         </div>
-        <div style={{ fontSize: 11, color: 'var(--text-secondary)' }}>crowding-risk model accuracy</div>
-        <div style={{ fontSize: 10, color: 'var(--text-muted)' }}>SRS target ≥ 85% · F1 0.86</div>
+        <div style={{ fontSize: 11, color: 'var(--text-secondary)' }}>delay-severity model accuracy</div>
+        <div style={{ fontSize: 10, color: 'var(--text-muted)' }}>XGBoost · SRS target ≥ 85% · macro-F1 0.70</div>
       </motion.div>
 
       <motion.div
@@ -113,8 +113,8 @@ function NetworkModelCard() {
         animate={{ y: [0, -6, 0] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
         style={{ ...glass, position: 'absolute', top: 160, left: '42%', padding: '10px 14px', zIndex: 3, borderRadius: 14 }}
       >
-        <div style={{ fontSize: 19, fontWeight: 850, color: '#fff' }}><AnimatedNumber value={91.7} decimals={1} suffix="%" /></div>
-        <div style={{ fontSize: 10.5, color: 'var(--text-secondary)' }}>Spark ↔ Python agreement</div>
+        <div style={{ fontSize: 19, fontWeight: 850, color: '#fff' }}><AnimatedNumber value={99.2} decimals={1} suffix="%" /></div>
+        <div style={{ fontSize: 10.5, color: 'var(--text-secondary)' }}>RandomForest ↔ XGBoost agreement</div>
       </motion.div>
 
       {/* caption */}
@@ -131,38 +131,38 @@ const NAV_LINKS = [
 ]
 
 const FEATURES = [
-  { icon: Database, title: 'Big Data Pipeline', desc: 'Hadoop HDFS + Apache Spark ingest and clean 2.4M+ ticketing records into partitioned Parquet.' },
+  { icon: Database, title: 'Big Data Pipeline', desc: 'Hadoop HDFS + Apache Spark ingest and clean 2.06M+ ticketing records into partitioned Parquet.' },
   { icon: BrainCircuit, title: 'Dual ML Pipelines', desc: 'Spark MLlib and an independent Python pipeline solve the same problems — every prediction cross-verified.' },
-  { icon: TrendingUp, title: 'Demand Forecasting', desc: 'Chronologically-validated forecasts beat the naive baseline by 55%+ MAE, event-aware peaks included.' },
-  { icon: Gauge, title: 'Crowding Intelligence', desc: 'Persistent overcrowding detection and next-24h crowding-risk per trip, direction and period.' },
+  { icon: TrendingUp, title: 'Demand Forecasting', desc: 'Chronologically-validated forecasts cut the naive baseline MAE by 31%, event-aware peaks included.' },
+  { icon: Gauge, title: 'Crowding Intelligence', desc: 'Persistent overcrowding detection and next-24h crowding-risk per trip, direction and period — crowding-risk model AUC 0.93 on unseen data.' },
   { icon: Clock, title: 'Delay Analytics', desc: 'Day×hour heatmaps, recurring-pattern mining, bottleneck stops, 5-class severity prediction.' },
   { icon: Map, title: 'Live Network Map', desc: 'Satellite night map with live vehicles, glowing segment load and pulsing delay hotspots.' },
-  { icon: GitCompare, title: 'Model Comparison', desc: '120 unseen cases compared Spark-vs-Python with agreement %, probability deltas, explanations.' },
+  { icon: GitCompare, title: 'Model Comparison', desc: '120 unseen cases compared RandomForest-vs-XGBoost (both Python) with agreement %, probability deltas, explanations.' },
   { icon: Sparkles, title: 'Evidence-Based Actions', desc: 'Every recommendation ships with its supporting numbers — no unexplained suggestions.' },
 ]
 
 const PIPELINE_STEPS = [
-  { icon: FolderCog, label: 'Dataset Generator', sub: '2.41M tickets · 12 months', color: '#9085e9' },
+  { icon: FolderCog, label: 'Dataset Generator', sub: '2.06M tickets · 12 months', color: '#9085e9' },
   { icon: HardDrive, label: 'HDFS Raw Zone', sub: 'CSV · JSON · GPS events', color: '#3b82f6' },
   { icon: Layers, label: 'Spark Clean + Join', sub: '9 tables · quarantine kept', color: '#38bdf8' },
   { icon: Braces, label: 'Feature Layer', sub: '23 features · Parquet', color: '#199e70' },
   { icon: BrainCircuit, label: 'Dual ML Training', sub: 'MLlib ∥ scikit-learn/XGBoost', color: '#d55181' },
-  { icon: Scale, label: 'Result Comparison', sub: '91.7% agreement · 120 cases', color: '#c98500' },
+  { icon: Scale, label: 'Result Comparison', sub: '99.2% agreement · 120 cases', color: '#c98500' },
   { icon: LayoutDashboard, label: 'Dashboards + API', sub: 'FastAPI → React', color: '#0ca30c' },
 ]
 
 const MODELS = [
   {
-    name: 'Spark MLlib', model: 'Random Forest · delay severity', color: BLUE,
-    stats: [['Accuracy', '87.2%'], ['F1-score', '0.84'], ['AUC', '0.90'], ['Version', 'v3.2']],
+    name: 'Spark MLlib', model: 'RandomForest · delay severity', color: BLUE,
+    stats: [['Accuracy', '86.1%'], ['Weighted-F1', '0.861'], ['Task', 'delay 5-class'], ['Validation', 'chronological']],
   },
   {
     name: 'Python DS', model: 'XGBoost · delay severity', color: '#199e70', best: true,
-    stats: [['Accuracy', '88.9%'], ['F1-score', '0.86'], ['AUC', '0.92'], ['Version', 'v2.7']],
+    stats: [['Accuracy', '86.7%'], ['Macro-F1', '0.70'], ['Task', 'delay 5-class'], ['Validation', 'chronological']],
   },
   {
-    name: 'Forecasting', model: 'GBT + XGBoost vs naive baseline', color: '#c98500',
-    stats: [['MAPE', '3.1%'], ['R²', '0.93'], ['MAE vs baseline', '−58%'], ['Validation', 'chronological']],
+    name: 'Forecasting', model: 'Linear residual vs naive baseline', color: '#c98500',
+    stats: [['MAPE', '3.6%'], ['R²', '0.98'], ['MAE vs baseline', '−31%'], ['Validation', 'chronological']],
   },
 ]
 
@@ -244,7 +244,7 @@ export default function Landing({ loggedIn = false }) {
               initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: 0.1, ease }}
               style={{ fontSize: 'clamp(38px, 4.6vw, 62px)', lineHeight: 1.05, margin: '0 0 22px', letterSpacing: '-0.03em', fontWeight: 800 }}
             >
-              Turn <span style={{ color: BLUE, textShadow: '0 0 30px rgba(59,130,246,0.5)' }}>2.4M</span> transport
+              Turn <span style={{ color: BLUE, textShadow: '0 0 30px rgba(59,130,246,0.5)' }}>2.06M</span> transport
               records into <span style={{
                 background: `linear-gradient(90deg, ${BLUE}, ${CYAN})`,
                 WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
@@ -299,7 +299,7 @@ export default function Landing({ loggedIn = false }) {
       <section id="intelligence" style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', background: 'linear-gradient(180deg, rgba(10,16,31,0.9), rgba(6,10,22,0.9))' }}>
         <div style={{ maxWidth: 1240, margin: '0 auto', padding: '38px 34px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 26 }}>
           {[
-            { v: 2412480, label: 'Ticketing records' },
+            { v: 2061787, label: 'Ticketing records' },
             { v: 100, label: 'Routes' },
             { v: 500, label: 'Stops' },
             { v: 250, label: 'Vehicles' },
@@ -379,7 +379,7 @@ export default function Landing({ loggedIn = false }) {
 
       {/* ======= models ======= */}
       <section id="models" style={{ maxWidth: 1240, margin: '0 auto', padding: '78px 34px 30px' }}>
-        <SectionTitle kicker="Models" title="Two pipelines, one truth" sub="Spark MLlib and Python solve the same problems independently — then 120 unseen cases decide who's right." />
+        <SectionTitle kicker="Models" title="Two pipelines, one truth" sub="Spark MLlib and a Python stack each train delay-severity models; a 120-case RandomForest-vs-XGBoost check (both Python) cross-verifies predictions — 99.2% agreement." />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, marginTop: 38 }}>
           {MODELS.map((m, i) => (
             <motion.div key={m.name}

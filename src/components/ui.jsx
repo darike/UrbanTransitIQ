@@ -132,10 +132,11 @@ function sparkFrom(label, up = true) {
 }
 
 /* ---------- KPI tile (command-center style) ---------- */
-export function KpiCard({ label, value, decimals = 0, suffix = '', prefix = '', delta, deltaGood, icon: Icon, accent = SERIES[0], vsLabel = 'vs last period' }) {
+export function KpiCard({ label, value, decimals = 0, suffix = '', prefix = '', delta, deltaGood, icon: Icon, accent = SERIES[0], vsLabel = 'vs last period', trend }) {
   const up = delta != null && delta >= 0
   const good = deltaGood == null ? up : deltaGood
-  const spark = sparkFrom(label, delta == null ? true : up)
+  // Only draw a sparkline from real trend data — never invent one from the label.
+  const spark = Array.isArray(trend) && trend.length > 1 ? trend : null
   return (
     <motion.div
       variants={riseIn}
@@ -167,9 +168,11 @@ export function KpiCard({ label, value, decimals = 0, suffix = '', prefix = '', 
         )}
       </div>
       {delta != null && <div style={{ fontSize: 10.5, color: 'var(--text-muted)', marginTop: 1 }}>{vsLabel}</div>}
-      <div style={{ margin: '8px -4px -2px' }}>
-        <Sparkline data={spark} color={accent} />
-      </div>
+      {spark && (
+        <div style={{ margin: '8px -4px -2px' }}>
+          <Sparkline data={spark} color={accent} />
+        </div>
+      )}
     </motion.div>
   )
 }

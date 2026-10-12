@@ -7,6 +7,7 @@ import { Users } from 'lucide-react'
 import {
   Page, PageHeader, ChartCard, VizTooltip, TimeTabs, staggerParent, riseIn, SERIES, INK,
 } from '../components/ui.jsx'
+import { SourceBadge } from '../api/client.jsx'
 import { stops, odMatrix, odStops, hourlyDemand } from '../data/mockData'
 import { useFilteredData } from '../FilterContext.jsx'
 
@@ -86,7 +87,7 @@ export default function PassengerFlow() {
         title="Passenger Flow"
         subtitle={`Boarding & alighting patterns, origin–destination flows, stop-level demand · ${filters.range.toLowerCase()}`}
         icon={Users} accent="#3b82f6"
-        right={<TimeTabs />}
+        right={<div style={{ display: 'flex', alignItems: 'center', gap: 10 }}><SourceBadge live={false} /><TimeTabs /></div>}
       />
 
       <motion.div variants={staggerParent} initial="initial" animate="animate" className="grid grid-2">

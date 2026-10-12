@@ -1,8 +1,9 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import { FlaskConical, RotateCcw } from 'lucide-react'
 import { Page, PageHeader, AnimatedNumber, riseIn, staggerParent, SERIES, STATUS } from '../components/ui.jsx'
 import { whatIfBase, routes } from '../data/mockData'
+import { apiFetch, SourceBadge } from '../api/client.jsx'
 
 /* Simple response-surface model for the simulator.
    In production these deltas come from the backend simulation endpoint. */
@@ -57,8 +58,33 @@ export default function WhatIf() {
   const [capacity, setCapacity] = useState(whatIfBase.capacity)
   const [demandShift, setDemandShift] = useState(0)
 
-  const sim = useMemo(() => simulate({ frequency, capacity, demandShift }), [frequency, capacity, demandShift])
+  const localSim = useMemo(() => simulate({ frequency, capacity, demandShift }), [frequency, capacity, demandShift])
   const baseSim = useMemo(() => simulate({ frequency: whatIfBase.frequency, capacity: whatIfBase.capacity, demandShift: 0 }), [])
+
+  // Prefer the backend simulation (real route_stats baseline); fall back to the local model.
+  const [liveSim, setLiveSim] = useState(null)
+  const [live, setLive] = useState(false)
+  useEffect(() => {
+    let cancelled = false
+    apiFetch('/api/whatif/simulate', {
+      method: 'POST',
+      body: JSON.stringify({ route_id: route, trips_per_hour: frequency, vehicle_capacity: capacity, demand_change_pct: demandShift }),
+    })
+      .then((res) => {
+        if (cancelled || !res?.result) return
+        const r = res.result
+        setLiveSim({
+          occupancy: r.occupancy_pct, waitMin: r.avg_wait_min, coverage: r.demand_coverage_pct,
+          risk: r.crowding_risk, loadPerTrip: r.passengers_per_trip,
+          demandNew: Math.round(r.passengers_per_trip * frequency),
+        })
+        setLive(true)
+      })
+      .catch(() => { if (!cancelled) { setLiveSim(null); setLive(false) } })
+    return () => { cancelled = true }
+  }, [route, frequency, capacity, demandShift])
+
+  const sim = liveSim || localSim
 
   const reset = () => { setFrequency(whatIfBase.frequency); setCapacity(whatIfBase.capacity); setDemandShift(0) }
 
@@ -67,7 +93,7 @@ export default function WhatIf() {
       <PageHeader
         title="What-If Scenario Simulator"
         subtitle="Simulate frequency, capacity and demand changes — all outputs are estimates, not actual results (SRS Step 49)"
-        right={<button className="btn btn-ghost" onClick={reset}><RotateCcw size={14} /> Reset</button>}
+        right={<div style={{ display: 'flex', alignItems: 'center', gap: 10 }}><SourceBadge live={live} /><button className="btn btn-ghost" onClick={reset}><RotateCcw size={14} /> Reset</button></div>}
       />
 
       <div className="grid grid-32">

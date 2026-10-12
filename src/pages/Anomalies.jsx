@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Page, PageHeader, SeverityBadge, staggerParent, riseIn } from '../components/ui.jsx'
+import { SourceBadge } from '../api/client.jsx'
 import { anomalies } from '../data/mockData'
 
 const TYPES = ['All', ...new Set(anomalies.map((a) => a.type))]
@@ -13,11 +14,14 @@ export default function Anomalies() {
     <Page>
       <PageHeader
         title="Anomaly Detection"
-        subtitle="Unusual passenger, delay, route, stop and ticketing behavior — statistical rules + isolation forest, cross-checked by both pipelines"
+        subtitle="Unusual passenger, delay, route, stop and ticketing behavior — flagged by statistical rules"
         right={
-          <select value={type} onChange={(e) => setType(e.target.value)} style={{ fontSize: 12.5 }}>
-            {TYPES.map((t) => <option key={t}>{t}</option>)}
-          </select>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <SourceBadge live={false} />
+            <select value={type} onChange={(e) => setType(e.target.value)} style={{ fontSize: 12.5 }}>
+              {TYPES.map((t) => <option key={t}>{t}</option>)}
+            </select>
+          </div>
         }
       />
 

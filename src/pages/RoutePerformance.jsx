@@ -12,6 +12,7 @@ import {
 import {
   Page, PageHeader, TimeTabs, Sparkline, AnimatedNumber, VizTooltip, staggerParent, riseIn, INK,
 } from '../components/ui.jsx'
+import { SourceBadge } from '../api/client.jsx'
 import { useFilteredData } from '../FilterContext'
 import { geoRoutes } from '../data/geoData'
 
@@ -120,7 +121,7 @@ export default function RoutePerformance() {
         title="Route Performance"
         subtitle="Deep-dive analytics on route efficiency, reliability, demand and passenger experience"
         icon={RouteIcon} accent="#199e70"
-        right={<TimeTabs />}
+        right={<div style={{ display: 'flex', alignItems: 'center', gap: 10 }}><SourceBadge live={false} /><TimeTabs /></div>}
       />
 
       {/* classification count tiles */}

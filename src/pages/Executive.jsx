@@ -68,7 +68,6 @@ export default function Executive() {
   const topRoutes = api?.top_routes
     ? api.top_routes.map((r) => ({ id: r.route_id, name: r.route_name, demand: r.demand, onTime: r.on_time, occupancy: r.occupancy, score: r.score, classification: r.classification }))
     : [...frs].sort((a, b) => b.score - a.score).slice(0, 7)
-  const vs = filters.range.replace('Last ', 'prev. ')
   return (
     <Page>
       <div className="page-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
@@ -90,11 +89,11 @@ export default function Executive() {
 
       {/* KPI row — reacts to the global filters */}
       <motion.div key={`${filters.range}-${filters.route}-${filters.occupancy}`} variants={staggerParent} initial="initial" animate="animate" className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))' }}>
-        <KpiCard label="Total Passengers" value={kpi.totalPassengers} delta={6.8} icon={Users} accent="#3b82f6" vsLabel={vs} />
-        <KpiCard label="Total Trips" value={kpi.totalTrips} delta={4.3} icon={Bus} accent="#199e70" vsLabel={vs} />
-        <KpiCard label="Avg Occupancy" value={kpi.avgOccupancy} decimals={1} suffix="%" delta={12} icon={Gauge} accent="#9085e9" vsLabel={vs} />
-        <KpiCard label="Avg Delay" value={kpi.avgDelay} decimals={1} suffix=" min" delta={-32} deltaGood icon={Clock} accent="#e66767" vsLabel={vs} />
-        <KpiCard label="On-Time Performance" value={kpi.onTimePct} decimals={1} suffix="%" delta={5.2} icon={Target} accent="#0ca30c" vsLabel={vs} />
+        <KpiCard label="Total Passengers" value={kpi.totalPassengers} icon={Users} accent="#3b82f6" />
+        <KpiCard label="Total Trips" value={kpi.totalTrips} icon={Bus} accent="#199e70" />
+        <KpiCard label="Avg Occupancy" value={kpi.avgOccupancy} decimals={1} suffix="%" icon={Gauge} accent="#9085e9" />
+        <KpiCard label="Avg Delay" value={kpi.avgDelay} decimals={1} suffix=" min" icon={Clock} accent="#e66767" />
+        <KpiCard label="On-Time Performance" value={kpi.onTimePct} decimals={1} suffix="%" icon={Target} accent="#0ca30c" />
       </motion.div>
 
       {/* alert stat chips */}
