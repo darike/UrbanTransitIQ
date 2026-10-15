@@ -36,7 +36,7 @@ export default function DualPipeline() {
 
       <motion.div variants={staggerParent} initial="initial" animate="animate" className="grid grid-3">
         <motion.div variants={riseIn} className="card" style={{ textAlign: 'center', borderTop: `2px solid ${SERIES[0]}` }}>
-          <p className="card-title">RandomForest (Python)</p>
+          <p className="card-title">RandomForest (Spark MLlib)</p>
           <div style={{ fontSize: 30, fontWeight: 800 }}><AnimatedNumber value={summary.spark.accuracy} decimals={1} suffix="%" /></div>
           <p style={{ fontSize: 12, color: 'var(--text-muted)', margin: '2px 0 0' }}>
             delay severity · macro-F1 {summary.spark.f1}
