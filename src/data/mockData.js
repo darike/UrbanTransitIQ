@@ -338,7 +338,7 @@ export const pipelineSummary = {
   task: 'Delay severity classification (5 classes)',
   cases: 120,
   agreement: 99.2,
-  spark: { model: 'RandomForest (Python)', accuracy: 85.6, f1: 0.71 },
+  spark: { model: 'RandomForest (Spark MLlib)', accuracy: 85.6, f1: 0.71 },
   python: { model: 'XGBoost (Python)', accuracy: 86.7, f1: 0.70 },
   sparkMllib: { model: 'RandomForest (Spark MLlib)', accuracy: 86.1, f1: 0.861 },
 }
